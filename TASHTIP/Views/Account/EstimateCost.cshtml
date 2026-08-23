@@ -1,0 +1,64 @@
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "حاسبة تكلفة التشطيب";
+}
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <h5 class="mb-3">أدخل بيانات وحدتك</h5>
+
+            <div class="mb-3">
+                <label class="form-label">مساحة الوحدة (م²)</label>
+                <input id="area" type="number" min="30" value="120" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">درجة التشطيب</label>
+                <select id="tier" class="form-select">
+                    <option value="850">لوكس - 850 ج.م/م²</option>
+                    <option value="1400" selected>سوبر لوكس - 1400 ج.م/م²</option>
+                    <option value="2100">الترا سوبر لوكس - 2100 ج.م/م²</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">المدينة</label>
+                <select id="city" class="form-select">
+                    <option value="1">القاهرة الكبرى</option>
+                    <option value="1.08">الساحل الشمالي / العين السخنة</option>
+                    <option value="0.92">مدن أخرى</option>
+                </select>
+            </div>
+
+            <button id="btnCalc" class="btn btn-tashtip w-100">احسب التكلفة التقريبية</button>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="dash-card text-center d-flex flex-column justify-content-center" style="min-height:260px">
+            <div class="text-muted mb-2">التكلفة التقريبية</div>
+            <div id="estimateResult" class="display-6 fw-bold" style="color:var(--tashtip-primary-dark)">—</div>
+            <div class="text-muted small mt-2">
+                هذا رقم تقديري فقط لمساعدتك على وضع ميزانية مبدئية، والسعر النهائي يُحدَّد بعد معاينة المهندس.
+            </div>
+            <a asp-action="BookAppointment" class="btn btn-tashtip mt-4">احجز معاينة لتسعير دقيق</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function calc() {
+            var area = parseFloat($('#area').val()) || 0;
+            var rate = parseFloat($('#tier').val());
+            var factor = parseFloat($('#city').val());
+            var total = Math.round(area * rate * factor);
+            var low = Math.round(total * 0.92);
+            var high = Math.round(total * 1.08);
+            $('#estimateResult').text(low.toLocaleString('en-US') + ' - ' + high.toLocaleString('en-US') + ' ج.م');
+        }
+        $('#btnCalc').on('click', calc);
+        $(function () { calc(); });
+    </script>
+}

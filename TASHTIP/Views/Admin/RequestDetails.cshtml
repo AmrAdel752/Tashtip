@@ -1,0 +1,98 @@
+@model TASHTIP.EF.ViewModel.Production.DetailsProjectFinishVM
+@using TASHTIP.EF.Entities.Production
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = $"طلب #{Model.PurchaseRequest?.ID_PR}";
+    var history = (List<RequestStatusHistory>)ViewBag.History;
+}
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="dash-card mb-3">
+            <h5>بيانات العميل</h5>
+            <ul class="list-unstyled mb-0">
+                <li><strong>الاسم:</strong> @Model.PurchaseRequest?.CutomerName</li>
+                <li><strong>العنوان:</strong> @Model.PurchaseRequest?.Address</li>
+                <li><strong>الوظيفة:</strong> @Model.PurchaseRequest?.Job</li>
+                <li><strong>الموبايل:</strong> @Model.PurchaseRequest?.Mobile</li>
+                <li><strong>العمر:</strong> @Model.PurchaseRequest?.Age</li>
+                <li><strong>البريد الإلكتروني:</strong> @Model.PurchaseRequest?.Email</li>
+                <li><strong>المهندس المفضل:</strong> @Model.PurchaseRequest?.Engineer</li>
+                <li><strong>التقييم:</strong> @Model.PurchaseRequest?.Rating</li>
+                <li><strong>طريقة الدفع:</strong> @Model.PurchaseRequest?.PayTerms</li>
+                <li><strong>ملاحظات:</strong> @Model.PurchaseRequest?.Notes</li>
+            </ul>
+        </div>
+
+        @if (Model.BussinessGallary != null)
+        {
+            <div class="dash-card">
+                <h5>الوحدة المطلوبة</h5>
+                <ul class="list-unstyled mb-0">
+                    <li><strong>الخدمة:</strong> @Model.BussinessGallary.ServicesName</li>
+                    <li><strong>المدينة:</strong> @Model.BussinessGallary.City</li>
+                    <li><strong>السعر:</strong> @Model.BussinessGallary.Price.ToString("N0") ج.م</li>
+                </ul>
+            </div>
+        }
+    </div>
+
+    <div class="col-lg-5">
+        <div class="dash-card mb-3">
+            <h5>تغيير الحالة</h5>
+            <div class="d-flex gap-2 mb-2">
+                <select id="statusSelect" class="form-select">
+                    @foreach (var s in RequestStatus.All)
+                    {
+                        <option value="@s" selected="@(Model.PurchaseRequest?.Status == s)">@RequestStatus.ArabicLabel[s]</option>
+                    }
+                </select>
+                <button id="btnUpdateStatus" class="btn btn-tashtip text-nowrap">تحديث</button>
+            </div>
+            <textarea id="statusNote" class="form-control" rows="2" placeholder="ملاحظة (اختياري)"></textarea>
+        </div>
+
+        <div class="dash-card">
+            <h5>سجل الحالة</h5>
+            @if (history != null && history.Any())
+            {
+                <ul class="status-timeline">
+                    @foreach (var h in history)
+                    {
+                        <li>
+                            <span class="status-badge status-@h.NewStatus">@RequestStatus.ArabicLabel[h.NewStatus]</span>
+                            <div class="small text-muted mt-1">@h.ChangedAt.ToString("yyyy-MM-dd HH:mm") @(string.IsNullOrEmpty(h.ChangedByName) ? "" : "- " + h.ChangedByName)</div>
+                            @if (!string.IsNullOrEmpty(h.Note))
+                            {
+                                <div class="small">@h.Note</div>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted small mb-0">لا يوجد سجل بعد.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#btnUpdateStatus').on('click', function () {
+            $.post('@Url.Action("ChangeRequestStatus")', {
+                id: @Model.PurchaseRequest?.ID_PR,
+                status: $('#statusSelect').val(),
+                note: $('#statusNote').val()
+            }, function (res) {
+                if (res.success) {
+                    dashToast('success', 'تم تحديث الحالة');
+                    setTimeout(() => location.reload(), 1200);
+                } else {
+                    dashToast('error', 'حدث خطأ');
+                }
+            });
+        });
+    </script>
+}

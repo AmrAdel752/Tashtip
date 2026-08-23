@@ -1,0 +1,81 @@
+@model List<TASHTIP.EF.ViewModel.Production.RequestListItemVM>
+@using TASHTIP.EF.Entities.Production
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "طلبات الحجز";
+    string? selected = ViewBag.SelectedStatus;
+}
+
+<div class="dash-card">
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        <a class="btn btn-sm @(selected == null ? "btn-tashtip" : "btn-outline-secondary")" asp-action="Requests">الكل</a>
+        @foreach (var s in RequestStatus.All)
+        {
+            <a class="btn btn-sm @(selected == s ? "btn-tashtip" : "btn-outline-secondary")" asp-action="Requests" asp-route-status="@s">
+                @RequestStatus.ArabicLabel[s]
+            </a>
+        }
+    </div>
+
+    <div class="table-responsive">
+        <table id="requestsTable" class="table table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>رقم</th>
+                    <th>العميل</th>
+                    <th>تاريخ الطلب</th>
+                    <th>الخدمة</th>
+                    <th>المدينة</th>
+                    <th>السعر</th>
+                    <th>الحالة</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>#@r.ID_PR</td>
+                        <td>@r.CutomerName</td>
+                        <td>@r.RequestDate</td>
+                        <td>@r.ServicesName</td>
+                        <td>@r.City</td>
+                        <td>@(r.Price.HasValue ? r.Price.Value.ToString("N0") + " ج.م" : "-")</td>
+                        <td>
+                            <select class="form-select form-select-sm status-select" data-id="@r.ID_PR" style="min-width:150px">
+                                @foreach (var s in RequestStatus.All)
+                                {
+                                    <option value="@s" selected="@(r.Status == s)">@RequestStatus.ArabicLabel[s]</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="RequestDetails" asp-route-id="@r.ID_PR">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a class="btn btn-sm btn-outline-secondary" asp-controller="Home" asp-action="PrintPR" asp-route-id="@r.ID_PR" target="_blank">
+                                <i class="bi bi-printer"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#requestsTable').DataTable({ order: [], language: { url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/ar.json' } });
+
+            $('.status-select').on('change', function () {
+                var id = $(this).data('id');
+                var status = $(this).val();
+                $.post('@Url.Action("ChangeRequestStatus")', { id: id, status: status }, function (res) {
+                    dashToast(res.success ? 'success' : 'error', res.success ? 'تم تحديث حالة الطلب' : 'حدث خطأ أثناء التحديث');
+                });
+            });
+        });
+    </script>
+}

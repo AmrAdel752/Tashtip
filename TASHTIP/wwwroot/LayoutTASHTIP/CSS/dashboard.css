@@ -1,0 +1,262 @@
+/* Tashtip back-office / customer dashboard shell.
+   Shares the public site's brand (teal #1bac91, Cairo font) but uses a
+   sidebar + topbar layout suited to data-heavy admin/customer screens. */
+
+:root {
+  --tashtip-primary: #1bac91;
+  --tashtip-primary-dark: #14806c;
+  --tashtip-accent: #2eca6a;
+  --tashtip-dark: #21413c;
+  --tashtip-bg: #f4f7f6;
+  --tashtip-border: #e3ebe9;
+}
+
+body.dash-body {
+  background: var(--tashtip-bg);
+  font-family: "Cairo", "Open Sans", sans-serif;
+}
+
+.dash-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.dash-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--tashtip-dark), #163330);
+  color: #fff;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+}
+
+.dash-sidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dash-sidebar .brand img {
+  width: 34px;
+  height: 34px;
+}
+
+.dash-sidebar .brand span {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff;
+}
+
+.dash-sidebar .nav-section-title {
+  padding: 16px 20px 6px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dash-sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  border-right: 3px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.dash-sidebar .nav-link i {
+  font-size: 1.15rem;
+  width: 22px;
+  text-align: center;
+}
+
+.dash-sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.dash-sidebar .nav-link.active {
+  background: rgba(27, 172, 145, 0.18);
+  border-right-color: var(--tashtip-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.dash-sidebar .nav-link .badge {
+  margin-right: auto;
+}
+
+/* ---------- Topbar ---------- */
+.dash-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid var(--tashtip-border);
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.dash-topbar .page-title {
+  font-weight: 700;
+  color: var(--tashtip-dark);
+  margin: 0;
+}
+
+.dash-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dash-content {
+  padding: 24px;
+}
+
+/* ---------- Cards / stats ---------- */
+.dash-stat-card {
+  background: #fff;
+  border: 1px solid var(--tashtip-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+}
+
+.dash-stat-card .icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  color: #fff;
+  background: var(--tashtip-primary);
+  flex-shrink: 0;
+}
+
+.dash-stat-card .value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--tashtip-dark);
+  line-height: 1.1;
+}
+
+.dash-stat-card .label {
+  color: #6c8580;
+  font-size: 0.85rem;
+}
+
+.dash-card {
+  background: #fff;
+  border: 1px solid var(--tashtip-border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.dash-card h5 {
+  font-weight: 700;
+  color: var(--tashtip-dark);
+}
+
+/* ---------- Status badges ---------- */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.status-New { background: #e7f0ff; color: #2563eb; }
+.status-UnderReview { background: #fff4e0; color: #b45309; }
+.status-QuoteSent { background: #eee5ff; color: #7c3aed; }
+.status-Approved { background: #e1f8ef; color: #0f9d63; }
+.status-InProgress { background: #dff2ff; color: #0369a1; }
+.status-Completed { background: #e1f8ef; color: var(--tashtip-primary-dark); }
+.status-Cancelled { background: #fde8e8; color: #dc2626; }
+
+.status-Pending { background: #fff4e0; color: #b45309; }
+.status-Confirmed { background: #dff2ff; color: #0369a1; }
+.status-Done { background: #e1f8ef; color: var(--tashtip-primary-dark); }
+
+/* ---------- Buttons ---------- */
+.btn-tashtip {
+  background: var(--tashtip-primary);
+  border-color: var(--tashtip-primary);
+  color: #fff;
+}
+
+.btn-tashtip:hover {
+  background: var(--tashtip-primary-dark);
+  border-color: var(--tashtip-primary-dark);
+  color: #fff;
+}
+
+/* ---------- Timeline ---------- */
+.status-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.status-timeline li {
+  position: relative;
+  padding-right: 34px;
+  padding-bottom: 22px;
+}
+
+.status-timeline li::before {
+  content: "";
+  position: absolute;
+  right: 6px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--tashtip-primary);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px var(--tashtip-primary);
+}
+
+.status-timeline li::after {
+  content: "";
+  position: absolute;
+  right: 11px;
+  top: 16px;
+  bottom: 0;
+  width: 2px;
+  background: var(--tashtip-border);
+}
+
+.status-timeline li:last-child::after {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .dash-sidebar {
+    position: fixed;
+    right: -260px;
+    z-index: 1050;
+    transition: right 0.2s ease;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+  }
+  .dash-sidebar.show {
+    right: 0;
+  }
+  .dash-content {
+    padding: 16px;
+  }
+}

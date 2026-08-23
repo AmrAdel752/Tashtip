@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TASHTIP.EF.Entities.Production;
+using TASHTIP.EF.ViewModel.Production;
 using TASHTIP.InfraDB.ContextDB;
 
 namespace TASHTIP.RepoUOWCore.Services
@@ -34,6 +35,34 @@ namespace TASHTIP.RepoUOWCore.Services
                 query = query.Where(r => r.Status == status);
             }
             return await query.OrderByDescending(r => r.ID_PR).ToListAsync();
+        }
+
+        /// <summary>Admin requests table: request + the unit it's about (left join - guest/no-unit requests still show).</summary>
+        public async Task<List<RequestListItemVM>> GetAllWithGalleryAsync(string? status = null)
+        {
+            var query = from pr in _db.PurchaseRequest
+                        join bg in _db.BussinessGallary on pr.BussinessGallaryID equals bg.ID into gj
+                        from bg in gj.DefaultIfEmpty()
+                        select new { pr, bg };
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(x => x.pr.Status == status);
+            }
+
+            return await query
+                .OrderByDescending(x => x.pr.ID_PR)
+                .Select(x => new RequestListItemVM
+                {
+                    ID_PR = x.pr.ID_PR,
+                    CutomerName = x.pr.CutomerName,
+                    RequestDate = x.pr.RequestDate,
+                    Status = x.pr.Status,
+                    ServicesName = x.bg != null ? x.bg.ServicesName : null,
+                    City = x.bg != null ? x.bg.City : null,
+                    Price = x.bg != null ? x.bg.Price : (decimal?)null
+                })
+                .ToListAsync();
         }
 
         public async Task<List<PurchaseRequest>> GetByUserAsync(string userId)

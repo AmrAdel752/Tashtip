@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using TASHTIP.EF.ViewModel.Production;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AspNetCore.Reporting;
 using System.Data;
+using TASHTIP.EF.Entities.Employee;
 
 namespace TASHTIP.Controllers
 {
@@ -19,19 +21,22 @@ namespace TASHTIP.Controllers
     //[Authorize]
     public class HomeController : Controller
     {
-         
+
         private readonly GeneralDBContext DB;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly UserManager<ApplicationUser> userManager;
         [Obsolete]
         private readonly IHostingEnvironment he;
 
         [Obsolete]
         public HomeController(  GeneralDBContext _generalDBContext ,
                                      IWebHostEnvironment _webHostEnvironment ,
+                                     UserManager<ApplicationUser> _userManager ,
                                      IHostingEnvironment _he)
-        {    
-            this.DB = _generalDBContext; 
+        {
+            this.DB = _generalDBContext;
             this.webHostEnvironment = _webHostEnvironment;
+            this.userManager = _userManager;
             this.he = _he;
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
@@ -39,7 +44,7 @@ namespace TASHTIP.Controllers
         public IActionResult Home()
         {
             var result = DB.BussinessGallary.DefaultIfEmpty().ToList();
-            var Count_New =  DB.PurchaseRequest.Where(c=>c.Status == "New").Distinct().Count();
+            var Count_New =  DB.PurchaseRequest.Where(c=>c.Status == RequestStatus.New).Distinct().Count();
 
             HttpContext.Session.SetInt32("Badge_Number_Of_PR_New", Count_New);
             if (HttpContext.Session.GetInt32("Badge_Number_Of_PR_New") != null)
@@ -90,40 +95,12 @@ namespace TASHTIP.Controllers
             return Json(result);
         }
 
+        /// <summary>Kept only so old bookmarks/links keep working; the real admin request list is Admin/Requests now.</summary>
         [HttpGet]
+        [Authorize(Policy = "Permissions.Admin")]
         public IActionResult AllPurchaseRequest()
         {
-            //var AllPR = DB.PurchaseRequest.Where (c=>c.Status == "New").ToList();
-            var AllPR = (from PR in DB.PurchaseRequest
-                         join BG in DB.BussinessGallary
-                         on PR.BussinessGallaryID equals BG.ID
-                         where (PR.Status == "New")
-                         select new ProjectFinishVM()
-                         {
-                            PurchaseRequest = new List<PurchaseRequest>()
-                                                            {
-                                                               new   PurchaseRequest()
-                                                                {
-                                                                  ID_PR =  PR.ID_PR,
-                                                                  CutomerName = PR.CutomerName,
-                                                                  RequestDate = PR.RequestDate
-                                                                }
-                                                            }.ToList(),
-                              BussinessGallary = new List<BussinessGallary>()
-                                                            {
-                                                               new   BussinessGallary()
-                                                                {
-                                                                   City = BG.City,
-                                                                   Price = BG.Price,
-                                                                   ServicesName = BG.ServicesName
-                                                                }
-                                                            }.ToList()
-                         }).Distinct().ToList();
-            if (AllPR != null)
-            {
-                return View(AllPR);
-            }
-            return View ();
+            return RedirectToAction("Requests", "Admin");
         }
 
         [HttpGet]
@@ -154,6 +131,7 @@ namespace TASHTIP.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Permissions.Admin")]
         public async Task<IActionResult> AddProject()
         {
            await InitComponent();
@@ -171,7 +149,8 @@ namespace TASHTIP.Controllers
 
 
         [Obsolete]
-        [HttpPost] 
+        [HttpPost]
+        [Authorize(Policy = "Permissions.Admin")]
         public async Task<IActionResult> AddProject(string ProjectDate, string  ServicesType, string City ,
             string Engineer , string Vendor, decimal Price , string DetailsUnit ,string DetailsInteriorDesgin ,
             string DetailsQualityFinishing, IFormFile Image, string Section)
@@ -279,10 +258,27 @@ namespace TASHTIP.Controllers
                         PurchaseRequest.Rating  =  string.Concat(!string.IsNullOrEmpty(Rating ) ? Rating .Trim() : null, " Star");
                         PurchaseRequest.PayTerms  = !string.IsNullOrEmpty(DeliveryTerms ) ? DeliveryTerms .Trim() : null;
                         PurchaseRequest.Notes = !string.IsNullOrEmpty(Notes ) ? Notes .Trim() : null;
-                        PurchaseRequest.Status = "New";
+                        PurchaseRequest.Status = RequestStatus.New;
+
+                        if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            PurchaseRequest.UserId = userManager.GetUserId(User);
+                        }
+
                         await DB.PurchaseRequest.AddAsync(PurchaseRequest);
                         await DB.SaveChangesAsync();
 
+                        // Initial history row: lets the admin dashboard chart "requests over
+                        // time" and gives the customer timeline a starting point.
+                        await DB.RequestStatusHistory.AddAsync(new RequestStatusHistory
+                        {
+                            PurchaseRequestId = PurchaseRequest.ID_PR,
+                            OldStatus = null,
+                            NewStatus = RequestStatus.New,
+                            ChangedByUserId = PurchaseRequest.UserId,
+                            ChangedByName = PurchaseRequest.CutomerName
+                        });
+                        await DB.SaveChangesAsync();
 
                         transaction.Commit();
                         return Json(new { success = "Success" });
@@ -299,54 +295,16 @@ namespace TASHTIP.Controllers
             return Json(new { error = "Error" });
         }
 
+        /// <summary>Kept only so old bookmarks/links keep working; the real admin request details page is Admin/RequestDetails now.</summary>
         [HttpGet]
+        [Authorize(Policy = "Permissions.Admin")]
         public IActionResult DetialsPurchaseRequest(int? id)
         {
-            //var AllPR = DB.PurchaseRequest.Where (c=>c.Status == "New").ToList();
-            var PR_ID = (from PR in DB.PurchaseRequest
-                         join BG in DB.BussinessGallary
-                         on PR.BussinessGallaryID equals BG.ID
-                         where (PR.ID_PR == id)
-                         select new DetailsProjectFinishVM()
-                         {
-                             PurchaseRequest = new PurchaseRequest()
-                             {
-                                 ID_PR = PR.ID_PR,
-                                 CutomerName = PR.CutomerName,
-                                 RequestDate = PR.RequestDate,
-                                 Address = PR.Address,
-                                 Job = PR.Job,
-                                 Mobile = PR.Mobile,
-                                 Age = PR.Age,
-                                 Email = PR.Email,
-                                 Engineer = PR.Engineer,
-                                 Rating = PR.Rating,
-                                 PayTerms = PR.PayTerms,
-                                 Notes = PR.Notes
-                             },
-                             BussinessGallary = new BussinessGallary()
-                             {
-                                 City = BG.City,
-                                 Price = BG.Price,
-                                 ServicesName = BG.ServicesName,
-                                 Engineer = BG.Engineer,
-                                 Vendor = BG.Vendor,
-                                 BussinessDate = BG.BussinessDate,
-                                 DetailsUnit = BG.DetailsUnit,
-                                 InteriorDesign = BG.InteriorDesign,
-                                 FinishingQuality = BG.FinishingQuality,
-                                 ProfileImage = BG.ProfileImage,
-                                 Filter = BG.Filter
-                             }
-                         }).Distinct().FirstOrDefault();
-            if (PR_ID != null)
-            {
-                return View(PR_ID);
-            }
-            return View();
+            return RedirectToAction("RequestDetails", "Admin", new { id });
         }
 
         #region Method Print
+        [Authorize(Policy = "Permissions.Admin")]
         public async Task<IActionResult> PrintPR(int? id)
         {
             //============================== Action Report 

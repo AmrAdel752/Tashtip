@@ -1,0 +1,77 @@
+@model TASHTIP.EF.Entities.Production.BussinessGallary
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = $"تعديل الوحدة #{Model.ID}";
+    var images = (List<TASHTIP.EF.Entities.Production.BussinessGallaryImage>)ViewBag.Images;
+}
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="dash-card mb-3">
+            <h5>وسائط العرض (3D / VR)</h5>
+            <p class="text-muted small">
+                اتركهما فارغين لاستخدام النموذج/البانوراما التجريبية الافتراضية. أدخل مسار ملف حقيقي (مثال:
+                <code>/LayoutTASHTIP/3D Models/my-unit/scene.gltf</code>) بعد رفعه لتفعيل المحتوى الحقيقي لهذه الوحدة.
+            </p>
+            <div class="mb-2">
+                <label class="form-label">مسار موديل 3D (.gltf)</label>
+                <input id="model3d" class="form-control" value="@Model.Model3DPath" placeholder="/LayoutTASHTIP/3D Models/room/scene.gltf" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">مسار بانوراما VR 360°</label>
+                <input id="panorama" class="form-control" value="@Model.Panorama360Path" placeholder="/LayoutTASHTIP/Images/vr/my-unit.jpg" />
+            </div>
+            <button id="btnSaveMedia" class="btn btn-tashtip">حفظ</button>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <h5>صور 2D إضافية</h5>
+            <div class="d-flex gap-2 mb-3">
+                <input id="newImagePath" class="form-control" placeholder="اسم الملف داخل ImageFinshProject/Image (مثال: image-021.jpg)" />
+                <button id="btnAddImage" class="btn btn-tashtip text-nowrap">إضافة</button>
+            </div>
+            <div class="row g-2" id="imagesGrid">
+                @foreach (var img in images)
+                {
+                    <div class="col-4" data-img-id="@img.ID">
+                        <div class="position-relative">
+                            <img src="~/ImageFinshProject/Image/@img.ImagePath" class="img-fluid rounded" style="height:80px;width:100%;object-fit:cover" />
+                            <button class="btn btn-sm btn-danger position-absolute top-0 end-0 btn-delete-image" data-id="@img.ID" style="padding:2px 6px">×</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#btnSaveMedia').on('click', function () {
+            $.post('@Url.Action("UpdateGalleryMedia")', {
+                id: @Model.ID,
+                model3DPath: $('#model3d').val(),
+                panorama360Path: $('#panorama').val()
+            }, function (res) {
+                dashToast(res.success ? 'success' : 'error', res.success ? 'تم الحفظ' : 'حدث خطأ');
+            });
+        });
+
+        $('#btnAddImage').on('click', function () {
+            var path = $('#newImagePath').val();
+            if (!path) return;
+            $.post('@Url.Action("AddGalleryImage")', { id: @Model.ID, imagePath: path }, function () {
+                location.reload();
+            });
+        });
+
+        $('.btn-delete-image').on('click', function () {
+            var id = $(this).data('id');
+            $.post('@Url.Action("DeleteGalleryImage")', { imageId: id }, function () {
+                location.reload();
+            });
+        });
+    </script>
+}

@@ -1,0 +1,36 @@
+@model List<TASHTIP.EF.Entities.Production.PurchaseRequest>
+@using TASHTIP.EF.Entities.Production
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "طلباتي";
+}
+
+@if (!Model.Any())
+{
+    <div class="dash-card text-center py-5">
+        <i class="bi bi-inbox display-4 text-muted"></i>
+        <p class="text-muted mt-3 mb-3">لا يوجد لديك طلبات حجز بعد.</p>
+        <a asp-controller="Home" asp-action="Home" class="btn btn-tashtip">تصفح الوحدات واطلب معاينة</a>
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var r in Model)
+        {
+            var status = r.Status ?? RequestStatus.New;
+            <div class="col-md-6 col-lg-4">
+                <div class="dash-card h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <strong>طلب #@r.ID_PR</strong>
+                        <span class="status-badge status-@status">@RequestStatus.ArabicLabel[status]</span>
+                    </div>
+                    <div class="small text-muted mb-3">@r.RequestDate</div>
+                    <a class="btn btn-sm btn-outline-secondary w-100" asp-action="MyRequestDetails" asp-route-id="@r.ID_PR">
+                        عرض التفاصيل ومتابعة الحالة
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}

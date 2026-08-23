@@ -1,0 +1,79 @@
+@model List<TASHTIP.EF.Entities.Production.BussinessGallary>
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "معرض الوحدات";
+}
+
+<div class="dash-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-muted small mb-0">إدارة صور/موديل 3D/بانوراما VR لكل وحدة. لإضافة وحدة جديدة استخدم "إضافة مشروع".</p>
+        <a asp-controller="Home" asp-action="AddProject" class="btn btn-tashtip btn-sm"><i class="bi bi-plus-lg"></i> إضافة وحدة</a>
+    </div>
+
+    <div class="table-responsive">
+        <table id="galleryTable" class="table table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الصورة</th>
+                    <th>الخدمة</th>
+                    <th>المدينة</th>
+                    <th>السعر</th>
+                    <th>3D</th>
+                    <th>VR 360°</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var g in Model)
+                {
+                    <tr>
+                        <td>#@g.ID</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(g.ProfileImage))
+                            {
+                                <img src="~/ImageFinshProject/Image/@g.ProfileImage" style="width:56px;height:40px;object-fit:cover;border-radius:6px" />
+                            }
+                        </td>
+                        <td>@g.ServicesName</td>
+                        <td>@g.City</td>
+                        <td>@g.Price.ToString("N0") ج.م</td>
+                        <td>@(string.IsNullOrEmpty(g.Model3DPath) ? "افتراضي" : "مخصص")</td>
+                        <td>@(string.IsNullOrEmpty(g.Panorama360Path) ? "افتراضي" : "مخصص")</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="EditGallery" asp-route-id="@g.ID"><i class="bi bi-pencil"></i></a>
+                            <a class="btn btn-sm btn-outline-secondary" asp-controller="Home" asp-action="DetailsProperty" asp-route-id="@g.ID" target="_blank"><i class="bi bi-eye"></i></a>
+                            <button class="btn btn-sm btn-outline-danger btn-delete-gallery" data-id="@g.ID"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#galleryTable').DataTable({ order: [] });
+
+            $('.btn-delete-gallery').on('click', function () {
+                var id = $(this).data('id');
+                Swal.fire({
+                    title: 'حذف الوحدة؟',
+                    text: 'سيتم حذف الوحدة وصورها نهائياً',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'حذف',
+                    cancelButtonText: 'إلغاء'
+                }).then((r) => {
+                    if (r.isConfirmed) {
+                        $.post('@Url.Action("DeleteGallery")', { id: id }, function () {
+                            location.reload();
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

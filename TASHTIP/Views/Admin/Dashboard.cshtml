@@ -1,0 +1,140 @@
+@model TASHTIP.RepoUOWCore.Services.DashboardOverview
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "نظرة عامة";
+}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="icon"><i class="bi bi-card-checklist"></i></div>
+            <div>
+                <div class="value">@Model.TotalRequests</div>
+                <div class="label">إجمالي الطلبات</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="icon" style="background:#2563eb"><i class="bi bi-bell"></i></div>
+            <div>
+                <div class="value">@Model.NewRequests</div>
+                <div class="label">طلبات جديدة</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="icon" style="background:#0369a1"><i class="bi bi-tools"></i></div>
+            <div>
+                <div class="value">@Model.InProgressRequests</div>
+                <div class="label">قيد التنفيذ</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="icon" style="background:#0f9d63"><i class="bi bi-check2-circle"></i></div>
+            <div>
+                <div class="value">@Model.CompletedRequests</div>
+                <div class="label">مكتملة</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="icon" style="background:#7c3aed"><i class="bi bi-images"></i></div>
+            <div>
+                <div class="value">@Model.TotalUnits</div>
+                <div class="label">وحدة في المعرض</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="icon" style="background:#b45309"><i class="bi bi-star"></i></div>
+            <div>
+                <div class="value">@Model.PendingReviews</div>
+                <div class="label">تقييمات بانتظار المراجعة</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="icon" style="background:#dc2626"><i class="bi bi-calendar2-check"></i></div>
+            <div>
+                <div class="value">@Model.UpcomingAppointments</div>
+                <div class="label">مواعيد قادمة</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="dash-card h-100">
+            <h5 class="mb-3">الطلبات حسب الحالة</h5>
+            <canvas id="statusChart" height="220"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="dash-card h-100">
+            <h5 class="mb-3">الطلبات الجديدة خلال آخر 14 يوم</h5>
+            <canvas id="trendChart" height="220"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="dash-card mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">آخر الطلبات</h5>
+        <a asp-controller="Admin" asp-action="Requests" class="btn btn-sm btn-tashtip">عرض الكل</a>
+    </div>
+    <p class="text-muted small mb-0">استخدم "طلبات الحجز" من القائمة الجانبية لمتابعة كل الطلبات وتحديث حالتها.</p>
+</div>
+
+@{
+    var statusLabels = Model.RequestsByStatus.Keys
+        .Select(k => TASHTIP.EF.Entities.Production.RequestStatus.ArabicLabel.GetValueOrDefault(k, k));
+    var statusCounts = Model.RequestsByStatus.Values;
+    var trendLabels = Model.RequestsLast14Days.Select(d => d.Day);
+    var trendCounts = Model.RequestsLast14Days.Select(d => d.Count);
+}
+
+@section Scripts {
+    <script>
+        const statusChart = new Chart(document.getElementById('statusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(statusLabels)),
+                datasets: [{
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(statusCounts)),
+                    backgroundColor: ['#2563eb', '#b45309', '#7c3aed', '#0f9d63', '#0369a1', '#14806c', '#dc2626']
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom', labels: { font: { family: 'Cairo' } } } } }
+        });
+
+        const trendChart = new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(trendLabels)),
+                datasets: [{
+                    label: 'طلبات جديدة',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(trendCounts)),
+                    borderColor: '#1bac91',
+                    backgroundColor: 'rgba(27,172,145,.15)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+            }
+        });
+    </script>
+}

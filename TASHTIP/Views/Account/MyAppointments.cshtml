@@ -1,0 +1,46 @@
+@model List<TASHTIP.EF.Entities.Production.Appointment>
+@using TASHTIP.EF.Entities.Production
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "مواعيدي";
+    var labels = new Dictionary<string, string>
+    {
+        [AppointmentStatus.Pending] = "قيد الانتظار",
+        [AppointmentStatus.Confirmed] = "مؤكد",
+        [AppointmentStatus.Done] = "تم",
+        [AppointmentStatus.Cancelled] = "ملغي"
+    };
+}
+
+@if (TempData["BookingSuccess"] != null)
+{
+    <div class="alert alert-success">@TempData["BookingSuccess"]</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="dash-card text-center py-5">
+        <i class="bi bi-calendar2-x display-4 text-muted"></i>
+        <p class="text-muted mt-3 mb-3">لا يوجد لديك مواعيد معاينة محجوزة.</p>
+        <a asp-action="BookAppointment" class="btn btn-tashtip">احجز معاينة الآن</a>
+    </div>
+}
+else
+{
+    <div class="dash-card">
+        <table class="table align-middle">
+            <thead><tr><th>التاريخ</th><th>الفترة</th><th>المهندس</th><th>الحالة</th></tr></thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.PreferredDate.ToString("yyyy-MM-dd")</td>
+                        <td>@a.TimeSlot</td>
+                        <td>@(a.EngineerName ?? "سيتم التحديد")</td>
+                        <td><span class="status-badge status-@a.Status">@labels[a.Status]</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

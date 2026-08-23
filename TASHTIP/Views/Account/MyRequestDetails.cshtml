@@ -1,0 +1,75 @@
+@model TASHTIP.EF.Entities.Production.PurchaseRequest
+@using TASHTIP.EF.Entities.Production
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = $"طلب #{Model.ID_PR}";
+    var history = (List<RequestStatusHistory>)ViewBag.History;
+    var status = Model.Status ?? RequestStatus.New;
+}
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <h5 class="mb-0">تفاصيل الطلب</h5>
+                <span class="status-badge status-@status">@RequestStatus.ArabicLabel[status]</span>
+            </div>
+            <ul class="list-unstyled mb-0">
+                <li><strong>تاريخ الطلب:</strong> @Model.RequestDate</li>
+                <li><strong>العنوان:</strong> @Model.Address</li>
+                <li><strong>الوظيفة:</strong> @Model.Job</li>
+                <li><strong>طريقة الدفع:</strong> @Model.PayTerms</li>
+                <li><strong>ملاحظات:</strong> @Model.Notes</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <h5 class="mb-3">حالة الطلب</h5>
+            @if (history != null && history.Any())
+            {
+                <ul class="status-timeline">
+                    @foreach (var h in history)
+                    {
+                        <li>
+                            <span class="status-badge status-@h.NewStatus">@RequestStatus.ArabicLabel[h.NewStatus]</span>
+                            <div class="small text-muted mt-1">@h.ChangedAt.ToString("yyyy-MM-dd HH:mm")</div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted small mb-0">لا يوجد سجل بعد.</p>
+            }
+        </div>
+
+        @if (status == RequestStatus.Completed)
+        {
+            <div class="dash-card mt-3">
+                <h5 class="mb-3">شاركنا رأيك</h5>
+                @if (TempData["ReviewSuccess"] != null)
+                {
+                    <div class="alert alert-success">@TempData["ReviewSuccess"]</div>
+                }
+                <form asp-controller="Account" asp-action="SubmitReview" method="post">
+                    <input type="hidden" name="bussinessGallaryId" value="@Model.BussinessGallaryID" />
+                    <div class="mb-2">
+                        <label class="form-label">تقييمك</label>
+                        <select name="rating" class="form-select" style="max-width:160px">
+                            <option value="5">★★★★★</option>
+                            <option value="4">★★★★☆</option>
+                            <option value="3">★★★☆☆</option>
+                            <option value="2">★★☆☆☆</option>
+                            <option value="1">★☆☆☆☆</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <textarea name="comment" class="form-control" rows="3" required placeholder="أخبرنا برأيك في التشطيب والخدمة..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-tashtip">إرسال التقييم</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,54 @@
+@model List<TASHTIP.EF.ViewModel.UserManagment.UsersViewModel>
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "المستخدمون والصلاحيات";
+}
+
+<div class="dash-card">
+    <div class="table-responsive">
+        <table id="usersTable" class="table table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>اسم المستخدم</th>
+                    <th>البريد الإلكتروني</th>
+                    <th>الأدوار</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    var isAdmin = u.Roles.Contains("Admin");
+                    <tr>
+                        <td>@u.UserName</td>
+                        <td>@u.Email</td>
+                        <td>
+                            @foreach (var role in u.Roles)
+                            {
+                                <span class="status-badge status-Confirmed">@role</span>
+                            }
+                        </td>
+                        <td>
+                            <button class="btn btn-sm @(isAdmin ? "btn-outline-danger" : "btn-tashtip") btn-toggle-admin" data-id="@u.Id">
+                                @(isAdmin ? "إزالة صلاحية الإدارة" : "منح صلاحية الإدارة")
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#usersTable').DataTable({ order: [] });
+            $('.btn-toggle-admin').on('click', function () {
+                $.post('@Url.Action("ToggleAdminRole")', { userId: $(this).data('id') }, function (res) {
+                    if (res.success) location.reload();
+                });
+            });
+        });
+    </script>
+}

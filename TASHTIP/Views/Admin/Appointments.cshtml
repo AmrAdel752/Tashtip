@@ -1,0 +1,56 @@
+@model List<TASHTIP.EF.Entities.Production.Appointment>
+@using TASHTIP.EF.Entities.Production
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "مواعيد المعاينة";
+}
+
+<div class="dash-card">
+    <div class="table-responsive">
+        <table id="apptTable" class="table table-striped align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th>العميل</th>
+                    <th>الهاتف</th>
+                    <th>التاريخ المفضل</th>
+                    <th>الفترة</th>
+                    <th>المهندس</th>
+                    <th>الحالة</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.CustomerName</td>
+                        <td>@a.Phone</td>
+                        <td>@a.PreferredDate.ToString("yyyy-MM-dd")</td>
+                        <td>@a.TimeSlot</td>
+                        <td>@a.EngineerName</td>
+                        <td>
+                            <select class="form-select form-select-sm appt-status" data-id="@a.ID" style="min-width:130px">
+                                <option value="@AppointmentStatus.Pending" selected="@(a.Status == AppointmentStatus.Pending)">قيد الانتظار</option>
+                                <option value="@AppointmentStatus.Confirmed" selected="@(a.Status == AppointmentStatus.Confirmed)">مؤكد</option>
+                                <option value="@AppointmentStatus.Done" selected="@(a.Status == AppointmentStatus.Done)">تم</option>
+                                <option value="@AppointmentStatus.Cancelled" selected="@(a.Status == AppointmentStatus.Cancelled)">ملغي</option>
+                            </select>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#apptTable').DataTable({ order: [] });
+            $('.appt-status').on('change', function () {
+                $.post('@Url.Action("UpdateAppointmentStatus")', { id: $(this).data('id'), status: $(this).val() }, function (res) {
+                    dashToast(res.success ? 'success' : 'error', res.success ? 'تم التحديث' : 'حدث خطأ');
+                });
+            });
+        });
+    </script>
+}

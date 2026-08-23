@@ -1,0 +1,40 @@
+@model TASHTIP.EF.Entities.Production.Appointment
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "احجز معاينة";
+}
+
+<div class="dash-card" style="max-width:640px">
+    <h5 class="mb-3">احجز معاينة مع أحد مهندسينا</h5>
+    <form asp-action="BookAppointment" method="post">
+        <div class="mb-3">
+            <label class="form-label">الاسم</label>
+            <input asp-for="CustomerName" class="form-control" placeholder="اسمك (اختياري - سيُستخدم اسم حسابك)" />
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label class="form-label">رقم الهاتف</label>
+                <input asp-for="Phone" class="form-control" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">التاريخ المفضل</label>
+                <input asp-for="PreferredDate" type="date" class="form-control" required
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@Model.PreferredDate.ToString("yyyy-MM-dd")" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">الفترة المفضلة</label>
+            <select asp-for="TimeSlot" class="form-select">
+                <option value="10:00 ص - 12:00 م">10:00 ص - 12:00 م</option>
+                <option value="12:00 م - 2:00 م">12:00 م - 2:00 م</option>
+                <option value="2:00 م - 4:00 م">2:00 م - 4:00 م</option>
+                <option value="4:00 م - 6:00 م">4:00 م - 6:00 م</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">ملاحظات</label>
+            <textarea asp-for="Notes" class="form-control" rows="3" placeholder="عنوان الوحدة، أي تفاصيل تساعد المهندس..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-tashtip w-100">تأكيد الحجز</button>
+    </form>
+</div>

@@ -1,103 +1,77 @@
-﻿ 
-@using TASHTIP.EF.ViewModel.UserManagment;
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @using TASHTIP.EF.Entities.Employee
+@using TASHTIP.RepoUOWCore.Services
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
- 
-@{ 
-    //var UserName = User.Identity?.Name.ToString();
-    //bool ChangePassword = true ;
-    //var ChangePasswordModel = new ChangePasswordModel();
-    //if (UserName != null)
-    //{
-    //    var User = await UserManager.FindByNameAsync(UserName);
-    //    if (User != null)
-    //    { 
-    //        ChangePasswordModel.UserId = User.Id;
-    //        ChangePasswordModel.CurrentPassword = User.PasswordHash;
-
-    //         ChangePassword = User.ChangePass;
-          
-    //    }
-    //}
-  }
- 
+@inject NotificationsService NotificationsService
 
 @if (SignInManager.IsSignedIn(User))
 {
+    var isAdmin = await AuthorizationServices.AuthorizeAsync(User, "Permissions.Admin");
+    var currentUser = await UserManager.GetUserAsync(User);
+    var unreadCount = currentUser != null ? await NotificationsService.UnreadCountAsync(currentUser.Id) : 0;
+    var notifications = currentUser != null ? await NotificationsService.GetForUserAsync(currentUser.Id, 6) : new List<TASHTIP.EF.Entities.Production.Notification>();
+
+    @if (!isAdmin.Succeeded)
+    {
+        <li class="nav-item dropdown pe-3">
+            <a class="nav-link nav-profile position-relative" href="#" data-bs-toggle="dropdown" aria-expanded="true">
+                <i class="bi bi-bell"></i>
+                @if (unreadCount > 0)
+                {
+                    <span class="badge rounded-pill bg-danger position-absolute" style="top:-4px; inset-inline-start:-6px; font-size:.6rem;">@unreadCount</span>
+                }
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="min-width:280px">
+                <li class="dropdown-header"><h6 class="mb-0">الإشعارات</h6></li>
+                @if (!notifications.Any())
+                {
+                    <li><span class="dropdown-item-text text-muted small">لا توجد إشعارات بعد</span></li>
+                }
+                else
+                {
+                    foreach (var n in notifications)
+                    {
+                        <li>
+                            <a class="dropdown-item @(n.IsRead ? "" : "fw-bold")" href="@(n.LinkUrl ?? "#")">
+                                <div class="small">@n.Title</div>
+                                <div class="text-muted" style="font-size:.75rem">@n.CreatedAt.ToString("yyyy-MM-dd HH:mm")</div>
+                            </a>
+                        </li>
+                    }
+                }
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item text-center small" asp-controller="Account" asp-action="MarkNotificationsRead">تعليم الكل كمقروء</a></li>
+            </ul>
+        </li>
+    }
+
     <li class="nav-item dropdown pe-3">
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="true">
             <i class="bi bi-person"></i><span class="d-none d-md-block dropdown-toggle ps-2"> @User.Identity?.Name !</span>
-        </a><!-- End Profile Iamge Icon -->
+        </a>
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
                 <h6>Hello @User.Identity?.Name!</h6>
-                @*<span> work </span>*@
             </li>
             <li>
                 <hr class="dropdown-divider">
             </li>
-            @*@if (!ChangePassword)
-            {
-                <li>
-                    <form class="form-inline" asp-action="ChangePassword" asp-controller="Users" method="post">
-                        <div class="ui modal">
-                            <div class="header">Change Current Password</div>
-                            <div class="content">
-                                <div class="inline fields">
-                                    <input type="hidden" asp-for="@ChangePasswordModel.UserId" />
-                                    <div class="three field">
-                                        <label asp-for="@ChangePasswordModel.CurrentPassword"></label>
-                                        <input asp-for="@ChangePasswordModel.CurrentPassword" value="@ChangePasswordModel.CurrentPassword" class="form-control" readonly />
-                                        <span asp-validation-for="@ChangePasswordModel.CurrentPassword" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="four field">
-                                        <label asp-for="@ChangePasswordModel.NewPassword"></label>
-                                        <input asp-for="@ChangePasswordModel.NewPassword" class="form-control" required />
-                                        <span asp-validation-for="@ChangePasswordModel.NewPassword" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="four field">
-                                        <label asp-for="@ChangePasswordModel.ConfirmNewPassword"></label>
-                                        <input asp-for="@ChangePasswordModel.ConfirmNewPassword" class="form-control" required />
-                                        <span asp-validation-for="@ChangePasswordModel.ConfirmNewPassword" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="actions">
-                                <div>
-                                    <input type="button" class="ui red basic cancel inverted button">
-                                        <i class="remove icon"></i>
-                                        No 
-                                </div>
-                               
-
-                                <div>
-                                    <input type="submit" class="ui green ok inverted button">
-                                    <i class="checkmark icon"></i>
-                                    Yes
-                                </div>
-                                
-                            </div>
-                        </div>
-
-
-                         
-                    </form>
-                     
-
-                    
-                </li>
-                <!----------------------------------test-->
-               
-            }*@
-
-
-
-
+            <li>
+                @if (isAdmin.Succeeded)
+                {
+                    <a class="dropdown-item d-flex align-items-center" asp-controller="Admin" asp-action="Dashboard">
+                        <i class="bi bi-speedometer2"></i><span style="margin-right:5px;">لوحة التحكم</span>
+                    </a>
+                }
+                else
+                {
+                    <a class="dropdown-item d-flex align-items-center" asp-controller="Account" asp-action="MyRequests">
+                        <i class="bi bi-card-checklist"></i><span style="margin-right:5px;">طلباتي</span>
+                    </a>
+                }
+            </li>
             <li>
                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Home","Home")" method="post">
                     <button type="submit" class="dropdown-item d-flex align-items-center">
@@ -109,19 +83,22 @@
         </ul>
     </li>
 }
+else
+{
+    <li class="nav-item pe-3">
+        <a class="nav-link d-flex align-items-center" asp-area="Identity" asp-page="/Account/Login">
+            <i class="bi bi-box-arrow-in-left"></i><span style="margin-right:5px;">تسجيل الدخول</span>
+        </a>
+    </li>
+    <li class="nav-item pe-3">
+        <a class="nav-link d-flex align-items-center" asp-area="Identity" asp-page="/Account/Register">
+            <i class="bi bi-person-plus"></i><span style="margin-right:5px;">إنشاء حساب</span>
+        </a>
+    </li>
+}
 
 @section Scripts {
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
-
-    <script type="text/javascript">
-       // $('.ui.modal').modal('show');
-         
-    </script>
 }
-
-
- 
