@@ -36,6 +36,7 @@ namespace Web
 
                 await DefaultRoles.SeedRoleAsync(roleManager);
                 await DefaultUsers.SeedUserAdminAsync(userManager);
+                await DefaultUsers.SeedDemoCustomerAsync(userManager);
 
                 logger.LogInformation("Data Information");
                 logger.LogInformation("Application Started");

@@ -14,23 +14,23 @@ namespace TASHTIP.EF.Entities.Production
         [Key ]
         public int ID { get; set; }
 
-        public string  ServicesName { get; set; }  
-        public string  City { get; set; } 
-        public string  Engineer { get; set; }
+        public string?  ServicesName { get; set; }
+        public string?  City { get; set; }
+        public string?  Engineer { get; set; }
         public decimal Price { get; set; }
 
-        public string  Vendor { get; set; }
+        public string?  Vendor { get; set; }
 
         [MaxLength(20)]
-        public string BussinessDate { get; set; } 
-        public string  DetailsUnit { get; set; }
-        public string InteriorDesign { get; set; }
-        public string FinishingQuality { get; set; }
+        public string? BussinessDate { get; set; }
+        public string?  DetailsUnit { get; set; }
+        public string? InteriorDesign { get; set; }
+        public string? FinishingQuality { get; set; }
 
-        public string  LinkVideo { get; set; }
-        public string  ProfileImage { get; set; }
+        public string?  LinkVideo { get; set; }
+        public string?  ProfileImage { get; set; }
 
-        public string Filter { get; set; }
+        public string? Filter { get; set; }
 
         /// <summary>Path (under wwwroot) to a real .gltf/.glb 3D model of this unit. Null = show the demo model.</summary>
         public string? Model3DPath { get; set; }

@@ -13,40 +13,79 @@ body {
 
 .auth-brand {
     flex: 1;
-    background: linear-gradient(135deg, #14806c, #1bac91 60%, #2eca6a);
-    color: #fff;
+    background: #fbfdfc;
+    color: #16332e;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Soft brand-colored blobs in the corners - decorative, never behind the
+   illustration itself so its white background blends seamlessly into the panel. */
+.auth-brand::before,
+.auth-brand::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(2px);
+}
+
+.auth-brand::before {
+    width: 420px;
+    height: 420px;
+    top: -140px;
+    inset-inline-end: -120px;
+    background: radial-gradient(circle, rgba(27, 172, 145, .16), rgba(27, 172, 145, 0) 70%);
+}
+
+.auth-brand::after {
+    width: 340px;
+    height: 340px;
+    bottom: -120px;
+    inset-inline-start: -100px;
+    background: radial-gradient(circle, rgba(46, 202, 106, .14), rgba(46, 202, 106, 0) 70%);
 }
 
 .auth-brand-inner {
-    max-width: 420px;
+    position: relative;
+    z-index: 1;
+    max-width: 380px;
     text-align: center;
 }
 
 .auth-logo {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 18px;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
 }
 
 .auth-brand-inner h1 {
     font-weight: 800;
-    font-size: 2.2rem;
-    margin-bottom: 14px;
+    font-size: 1.9rem;
+    margin-bottom: 4px;
+    color: #14806c;
 }
 
 .auth-brand-inner h1 span {
     font-size: .55em;
     font-weight: 600;
-    opacity: .9;
+    opacity: .75;
+    display: block;
+}
+
+.auth-illustration {
+    width: 100%;
+    max-width: 260px;
+    margin: 22px auto 26px;
     display: block;
 }
 
 .auth-brand-inner p {
-    opacity: .92;
+    color: #4b6b64;
     line-height: 1.8;
 }
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -215,7 +216,17 @@ namespace Web
             //    routes.MapHub<SomeHub>("/path");
             //});
             app.UseHttpsRedirection();
-            app.UseStaticFiles(); 
+
+            // Default static file middleware 404s on extensions it doesn't recognize -
+            // .gltf/.glb (3D unit models) need to be registered explicitly or the 3D
+            // viewer's model file silently fails to load with a 404.
+            var contentTypeProvider = new FileExtensionContentTypeProvider();
+            contentTypeProvider.Mappings[".gltf"] = "model/gltf+json";
+            contentTypeProvider.Mappings[".glb"] = "model/gltf-binary";
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = contentTypeProvider
+            });
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

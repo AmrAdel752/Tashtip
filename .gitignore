@@ -31,3 +31,4 @@ Thumbs.db
 
 # Local secrets / machine-specific settings (keep appsettings.json template, ignore local overrides)
 appsettings.*.local.json
+appsettings.Production.json
