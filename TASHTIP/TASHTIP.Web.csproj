@@ -169,6 +169,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TASHTIP.EF2\TASHTIP.EF.csproj" />
     <ProjectReference Include="..\TASHTIP.InfraDB2\TASHTIP.InfraDB.csproj" />
+    <ProjectReference Include="..\TASHTIP.RepoUOWCore2\TASHTIP.RepoUOWCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

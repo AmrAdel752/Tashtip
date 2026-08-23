@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TASHTIP.EF2\TASHTIP.EF.csproj" />
+    <ProjectReference Include="..\TASHTIP.InfraDB2\TASHTIP.InfraDB.csproj" />
+  </ItemGroup>
+
 </Project>

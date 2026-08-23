@@ -16,6 +16,7 @@ using TASHTIP.EF.Entities.Employee;
 using TASHTIP.EF.UsersRolePolicy;
 using TASHTIP.InfraDB;
 using TASHTIP.InfraDB.ContextDB;
+using TASHTIP.RepoUOWCore.Services;
 using Web.Models.Filter;
 
 namespace Web
@@ -183,6 +184,16 @@ namespace Web
             services.AddMvc();
             services.AddMvcCore();
 
+            #region Business logic services (TASHTIP.RepoUOWCore)
+
+            services.AddScoped<NotificationsService>();
+            services.AddScoped<RequestsService>();
+            services.AddScoped<GalleryService>();
+            services.AddScoped<ReviewsService>();
+            services.AddScoped<AppointmentsService>();
+            services.AddScoped<DashboardStatsService>();
+
+            #endregion
 
         }
 
