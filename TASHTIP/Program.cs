@@ -11,8 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TASHTIP.EF.Entities.Employee;
-//using Web.Models.Users_Role_Policy.Seeds;
-//using static Infrastructure.DataContext;
+using TASHTIP.EF.UsersRolePolicy.Seeds;
 
 namespace Web
 {
@@ -35,10 +34,8 @@ namespace Web
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-
-                //await DefaultRoles.SeedRoleAsync(roleManager);
-                //await DefaultUsers.SeedUserAdminAsync(userManager);
-                //await DefaultUsers.SeedUserAccountAsync(userManager, roleManager);
+                await DefaultRoles.SeedRoleAsync(roleManager);
+                await DefaultUsers.SeedUserAdminAsync(userManager);
 
                 logger.LogInformation("Data Information");
                 logger.LogInformation("Application Started");
