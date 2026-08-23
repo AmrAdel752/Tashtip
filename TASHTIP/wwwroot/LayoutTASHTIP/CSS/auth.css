@@ -1,0 +1,117 @@
+/* Tashtip Login / Register pages - brand-consistent split panel. */
+
+body {
+    margin: 0;
+    font-family: "Cairo", "Open Sans", sans-serif;
+    background: #f4f7f6;
+}
+
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+}
+
+.auth-brand {
+    flex: 1;
+    background: linear-gradient(135deg, #14806c, #1bac91 60%, #2eca6a);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.auth-brand-inner {
+    max-width: 420px;
+    text-align: center;
+}
+
+.auth-logo {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 18px;
+}
+
+.auth-brand-inner h1 {
+    font-weight: 800;
+    font-size: 2.2rem;
+    margin-bottom: 14px;
+}
+
+.auth-brand-inner h1 span {
+    font-size: .55em;
+    font-weight: 600;
+    opacity: .9;
+    display: block;
+}
+
+.auth-brand-inner p {
+    opacity: .92;
+    line-height: 1.8;
+}
+
+.auth-form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-title {
+    font-weight: 800;
+    color: #21413c;
+    margin-bottom: 4px;
+}
+
+.auth-subtitle {
+    color: #6c8580;
+    margin-bottom: 28px;
+}
+
+.btn-tashtip {
+    background: #1bac91;
+    border-color: #1bac91;
+    color: #fff;
+    font-weight: 700;
+    padding: 10px;
+}
+
+.btn-tashtip:hover {
+    background: #14806c;
+    border-color: #14806c;
+    color: #fff;
+}
+
+.auth-validation-summary ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.auth-validation-summary.validation-summary-errors {
+    background: #fde8e8;
+    color: #b91c1c;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: .9rem;
+}
+
+.auth-validation-summary.validation-summary-valid {
+    display: none;
+}
+
+@media (max-width: 860px) {
+    .auth-wrapper {
+        flex-direction: column;
+    }
+    .auth-brand {
+        padding: 32px 20px;
+    }
+}

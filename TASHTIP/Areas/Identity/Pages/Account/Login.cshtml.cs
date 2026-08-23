@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using TASHTIP.EF.Entities.Employee;
+using TASHTIP.EF.UsersRolePolicy;
 
 namespace Web.Areas.Identity.Pages.Account
 {
@@ -123,6 +124,20 @@ namespace Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    // Land people somewhere useful instead of a generic returnUrl: admins go
+                    // straight to the back office, customers to their own requests dashboard.
+                    var isDefaultReturn = string.IsNullOrEmpty(returnUrl) || returnUrl == Url.Content("~/");
+                    if (isDefaultReturn)
+                    {
+                        var signedInUser = await _userManager.FindByNameAsync(Input.UserName);
+                        if (signedInUser != null && await _userManager.IsInRoleAsync(signedInUser, Roles.Admin.ToString()))
+                        {
+                            return RedirectToAction("Dashboard", "Admin");
+                        }
+                        return RedirectToAction("MyRequests", "Account");
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
