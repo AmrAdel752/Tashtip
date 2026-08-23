@@ -1,0 +1,331 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    //Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+}
+@*
+<div class="col-md-10 offset-md-1 ">         لو عاوز ارجع التسيق او الديزاين القديم اللغي الكوميت من ال layout و امسح الكود الجديد وارجع القديم
+        <section>
+
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h4>Create a new account.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-6">
+                     <div class="form-group">
+                        <label asp-for="Input.FisrtName"></label>
+                        <input asp-for="Input.FisrtName" class="form-control"   />
+                        <span asp-validation-for="Input.FisrtName" class="text-danger"></span>
+                     </div>
+                </div>
+                <div class="col-md-6">
+                     <div class="form-group">
+                        <label asp-for="Input.LastName"></label>
+                        <input asp-for="Input.LastName" class="form-control"  />
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control"   />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Input.Password"></label>
+                        <input asp-for="Input.Password" class="form-control"  />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                   </div>
+                </div>
+                <div class="col-md-6">
+                      <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control"  />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                     </div>
+                </div>
+            </div>
+
+            <button id="registerSubmit" type="submit" class="btn btn-primary btn-block"  style="height: 34px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 17px;">Register</button>
+        </form>
+        </section>
+    </div>
+*@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Main css -->
+
+    <link rel="stylesheet" href="~/LayoutTASHTIP/style_login_register/material-design-iconic-font.min.css" />
+    <link rel="stylesheet" href="~/LayoutTASHTIP/style_login_register/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <style>
+        .container {
+            top: 0px !important
+        }
+
+        .fa-user:before {
+            content: '\f007';
+        }
+
+        .material-icons-name {
+            font-size: 18px;
+        }
+
+        .fa-user, .fa-envelope, .fa-lock {
+            font-size: 15px
+        }
+
+        p {
+            color: #023b6d
+        }
+
+        .signup {
+            margin-bottom: 0px;
+        }
+
+        .main {
+            background: #9e9e9e;
+            padding: 0px 0px !important;
+        }
+
+        .form-title {
+            font-family: Algerian, "Cairo", sans-serif !important;
+        }
+
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, "Cairo", sans-serif !important;
+        }
+    </style>
+</head>
+<body style="margin-top:50px; background:#9e9e9e; ">
+
+    @*asp-route-returnUrl="@Model.ReturnUrl"*@
+    <form id="registerForm" id="FormRegister" class="row g-3 needs-validation" novalidate method="post">
+        <div class="main">
+            <!-- Sign up form -->
+            <section class="signup">
+                <div class="container_Login_Register">
+                    <div class="signup-content">
+                        <div class="signup-form">
+                            <h2 class="form-title" style="color:#023b6d">Register</h2>
+                            <h4>Create a new account.</h4>
+                            <form method="POST" id="FormRegister" class="register-form" id="register-form">
+
+                                <div class="form-group">
+                                    @*<label asp-for="Input.UserName">   <i class="fa fa-solid fa-user material-icons-name"></i> </label>
+                                    <input type="text" asp-for="Input.UserName" id="name" placeholder=" Your User Name" />
+                                    <span asp-validation-for="Input.UserName" class="text-danger"></span>*@
+
+                                    <label asp-for="Input.UserName" class="form-label">  <i class="fa fa-solid fa-user material-icons-name"></i> </label>
+                                    <input required type="text" asp-for="Input.UserName" id="name" class="form-control" placeholder=" Your User Name" required="Please, Enter your name!" />
+                                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    @*<label asp-for="Input.Email"> <i class="fa fa-solid fa-envelope material-icons-name"></i></label>
+                                    <input type="email" asp-for="Input.Email" id="email" placeholder="Your Email" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>*@
+
+                                    <label asp-for="Input.Email" class="form-label">  <i class="fa fa-solid fa-envelope material-icons-name"></i> </label>
+                                    <input required type="email" asp-for="Input.Email" class="form-control" id="email" placeholder="Your Email" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+
+
+                                <div class="form-group">
+                                    @*<label asp-for="Input.Password"> <i class="fa fa-solid fa-lock material-icons-name"></i> </label>
+                                    <input type="password" asp-for="Input.Password" id="pass" placeholder="Password" />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>*@
+
+
+                                    <label asp-for="Input.Password" class="form-label">  <i class="fa fa-solid fa-lock material-icons-name"></i>  </label>
+                                    <input required type="password" asp-for="Input.Password" class="form-control" id="pass" placeholder="Password" required="Please, Enter you password!" />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+
+
+                                <div class="form-group">
+                                    @*<label asp-for="Input.ConfirmPassword"> <i class="fa fa-solid fa-lock material-icons-name"></i></label>
+                                    <input type="password" asp-for="Input.ConfirmPassword" required id="re_pass" placeholder="Repeat your password" /> *@
+
+                                    <label asp-for="Input.ConfirmPassword"> <i class="fa fa-solid fa-lock material-icons-name"></i> </label>
+                                    <input required type="password" asp-for="Input.ConfirmPassword" class="form-control"  placeholder="Repeat your password" />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group form-button">
+                                    <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="signup-image">
+                            <figure><img src="~/LayoutTASHTIP/style_login_register/signup-image.jpg" alt="sing up image"></figure>
+                            <a asp-area="Identity" asp-page="/Account/Login" class="signup-image-link">I am already Login</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+
+    <!-- JS -->
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+<script>
+    $(document).ready(function () {
+        $("#FormRegister").validate();
+    });
+</script>
+
+@*
+
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Register Meters</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/LayoutMeters/Images/GPI_Meters.png " rel="icon">
+
+    <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+    <link href="~/LayoutMeters/Vendors/bootstrap/css/bootstrap.min.css " rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/bootstrap-icons/bootstrap-icons.css " rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/quill/quill.snow.css " rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/quill/quill.bubble.css " rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/simple-datatables/style.css " rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="~/LayoutMeters/Css/style.css " rel="stylesheet">
+
+</head>
+
+<body>
+      <main>
+        <div class="container">
+
+          <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                  <div class="d-flex justify-content-center py-4">
+                                <img style="width:400px; height:120px" src="~/LayoutMeters/Images/GPI_Meters.png" alt="">
+                   </div><!-- End Logo -->
+
+                    <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                    <p class="text-center small">Enter your personal details to create account</p>
+                  </div>
+
+                <form method="POST" id="FormRegister" class="row g-3 needs-validation" novalidate>
+
+                    <div class="col-12">
+                        <label asp-for="Input.UserName" class="form-label"> </label>
+                        <input type="text" asp-for="Input.UserName" id="name" class="form-control" placeholder=" Your User Name" required="Please, Enter your name!" />
+                        <div class="invalid-feedback">Please, enter your name!</div>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Input.Email" class="form-label">  </label>
+                        <input type="email" asp-for="Input.Email" class="form-control" id="email" placeholder="Your Email"  />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Input.Password" class="form-label">  </label>
+                        <input type="password" asp-for="Input.Password" class="form-control" id="pass" placeholder="Password" required = "Please, Enter you password!" />
+
+                        <div class="invalid-feedback">Please enter your password!</div>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Input.ConfirmPassword">  </label>
+                        <input type="password" asp-for="Input.ConfirmPassword" class="form-control" required   placeholder="Repeat your password" />
+                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                    </div>
+
+                    <div class="col-12">
+                        <p class="small mb-0">Already have an account? <a asp-area="Identity" asp-page="/Account/Login" class="signup-image-link">Log in</a></p>
+                    </div>
+
+                  </form>
+
+                </div>
+              </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main><!-- End #main -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="~/LayoutMeters/Vendors/bootstrap/js/bootstrap.bundle.js "></script>
+    <script src="~/LayoutMeters/Vendors/quill/quill.min.js "></script>
+    <script src="~/LayoutMeters/Vendors/simple-datatables/simple-datatables.js "></script>
+    <script src="~/LayoutMeters/Vendors/tinymce/tinymce.min.js "></script>
+
+    <script src="~/LayoutMeters/Vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="~/LayoutMeters/Js/mains.js "></script>
+
+    <!-- validate jquery -->
+    <partial name="_ValidationScriptsPartial" />
+    <!--=== END ===-->
+
+</body>
+</html>
+ *@
+
+

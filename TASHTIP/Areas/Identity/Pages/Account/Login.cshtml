@@ -1,0 +1,241 @@
+﻿@page
+@model LoginModel
+
+
+
+@{
+    ViewData["Title"] = "Login";
+    //Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+}
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/LayoutTASHTIP/style_login_register/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <style>
+        .container {
+            top: 0px !important
+        }
+
+        .fa-envelope, .fa-lock {
+            font-size: 15px
+        }
+
+        .fa-user:before {
+            content: '\f007';
+        }
+
+        p {
+            color: #023b6d
+        }
+
+        .main {
+            background: #9e9e9e;
+            padding: 0px 0px !important;
+        }
+
+        .form-title {
+            font-family: Algerian, "Cairo", sans-serif !important;
+        }
+
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, "Cairo", sans-serif !important;
+        }
+    </style>
+</head>
+<body style="margin-top:50px; background:#9e9e9e ">
+
+   
+    <!-- Sing in  Form -->
+    <form id="account" method="post" >
+        <div class="main" >
+            <section class="sign-in" >
+                <div class="container_Login_Register">
+                    <div class="signin-content"  >
+                        <div class="signin-image">
+                            <figure><img src="~/LayoutTASHTIP/style_login_register/signin-image.jpg" alt="sing up image"></figure>
+                            <a asp-area="Identity" asp-page="/Account/Register" class="signup-image-link">Create an account</a>
+                        </div>
+
+                        <div class="signin-form">
+                            <h2 class="form-title" style="color:#023b6d">Login</h2>
+                            <h4>Use a local account to log in.</h4>
+                            <form method="POST" id="FormLogin" class="register-form" id="login-form">
+                                <div class="form-group">
+                                    <label asp-for="Input.UserName"> <i class="fa fa-solid fa-user material-icons-name"></i> </label>
+                                    <div class="input-group has-validation">
+                                        <input type="text" class="form-control" asp-for="Input.UserName" id="your_name" placeholder="Your User Name" required="Please, Enter your name!" />
+                                    </div>
+                                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Input.Password"> <i class="fa fa-solid fa-lock material-icons-name"></i> </label>
+                                    <div class="input-group has-validation">
+                                        <input type="password" asp-for="Input.Password" class="form-control" id="your_pass" placeholder="Password" required="Please, Enter your Password!" />
+                                    </div>
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" asp-for="Input.RememberMe" id="remember-me" />
+                                    <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                                </div>
+                                <div class="form-group form-button">
+                                    <input type="submit" name="signin" id="signin" class="form-submit" value="Log in" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+
+
+
+
+    <!-- JS -->
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+@*
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Login Meters</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/LayoutMeters/Images/GPI_Meters.png " rel="icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/LayoutMeters/Vendors/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/bootstrap/css/bootstrap-grid.css" rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/bootstrap-icons/bootstrap-icons.css " rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/quill/quill.snow.css " rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/quill/quill.bubble.css " rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/LayoutMeters/Vendors/simple-datatables/style.css " rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/LayoutMeters/Css/style.css " rel="stylesheet">
+</head>
+
+<body>
+
+    <main>
+        <div class="container">
+
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                            <div class="d-flex justify-content-center py-4">
+                                <img style="width:400px; height:120px" src="~/LayoutMeters/Images/GPI_Meters.png" alt="">
+
+                            </div><!-- End Logo -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="pt-4 pb-2">
+                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                                        <p class="text-center small">Enter your username & password to login</p>
+                                    </div>
+
+                                    <!-- Sing in  Form -->
+                                    <form method="POST" id="FormLogin" class="row g-3 needs-validation" novalidate="">
+
+                                        <div class="col-12">
+                                            <label asp-for="Input.UserName" class="form-label"></label>
+                                            <div class="input-group has-validation">
+                                                <input type="text" class="form-control" asp-for="Input.UserName"  id="your_name" placeholder="Your User Name" required ="Please, Enter your name!" />
+                                            </div>
+                                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label asp-for="Input.Password" class="form-label">  </label>
+                                            <div class="input-group has-validation">
+                                                <input type="password" asp-for="Input.Password" class="form-control" id="your_pass" placeholder="Password" required ="Please, Enter your Password!" />
+                                            </div>
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-12">
+                                          <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" asp-for="Input.RememberMe" id="remember-me" />
+                                            <label for="remember-me" class="form-check-label"><span><span></span></span>Remember me</label>
+                                          </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <button  class="btn btn-primary w-100" type="submit" >Login</button>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <p class="small mb-0">Don't have account?  <a asp-area="Identity" asp-page="/Account/Register" class="signup-image-link">Register</a></p>
+                                        </div>
+                                      </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main><!-- End #main -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+    <!-- Vendor JS Files -->
+    <script src="~/LayoutMeters/Vendors/bootstrap/js/bootstrap.bundle.js "></script>
+    <script src="~/LayoutMeters/Vendors/quill/quill.min.js "></script>
+    <script src="~/LayoutMeters/Vendors/simple-datatables/simple-datatables.js "></script>
+    <script src="~/LayoutMeters/Vendors/tinymce/tinymce.min.js "></script>
+
+    <script src="~/LayoutMeters/Vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="~/LayoutMeters/Js/mains.js"></script>
+
+    <!-- validate jquery -->
+    <partial name="_ValidationScriptsPartial" />
+    <!--=== END ===-->
+
+</body>
+
+</html> *@
+
+<script>
+    $(document).ready(function () {
+        $("#FormLogin").validate();
+    });
+</script>

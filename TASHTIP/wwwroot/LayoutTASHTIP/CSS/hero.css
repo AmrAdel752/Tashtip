@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap");
+:root {
+  --bg_width: 2000px;
+  --bg_height: 1765px;
+
+  --gap_left: 958px;
+  --gap_top: 345px;
+
+  --clip_w: 292px;
+  --clip_h: 435px;
+
+  --ratio: 0;
+  --centerShift_x: calc((100vw - var(--bg_width) * var(--ratio)) / 2);
+  --centerShift_y: calc((100vh - var(--bg_height) * var(--ratio)) / 2);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body,
+#background {
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
+}
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-variant-ligatures: none;
+  -webkit-font-variant-ligatures: none;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
+}
+#background {
+  position: relative;
+  top: 0px;
+  right: 0px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url("https://images.unsplash.com/photo-1586023492125-27b2c045efd7?crop=faces,entropy&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTQwMTE4Mjl8&ixlib=rb-4.0.3&q=100&w=2000");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: -1;
+}
+img,
+canvas,
+input[type="radio"],
+label {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: none;
+}
+#background > * {
+  position: absolute;
+  top: calc(var(--centerShift_y) + var(--gap_top) * var(--ratio));
+  left: calc(var(--centerShift_x) + var(--gap_left) * var(--ratio));
+  width: calc(var(--clip_w) * var(--ratio));
+  height: calc(var(--clip_h) * var(--ratio));
+}
+#blank {
+  background: white;
+}
+#border {
+  box-shadow: inset 1px 1px 1px rgba(120, 120, 120, 0.1),
+    inset -1px -1px 1px rgba(0, 0, 0, 0.1);
+}
+.outer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--clip_w) * var(--ratio));
+  height: calc(var(--clip_h) * var(--ratio));
+  object-fit: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  filter: unset;
+  opacity: 0;
+  transition: opacity 2s;
+  background-color: white;
+  background-position: center;
+  background-size: auto
+    calc(max(var(--clip_w), var(--clip_h)) * var(--ratio) * 2); /* 必要に応じて調整 */
+  background-repeat: no-repeat;
+  will-change: background-position;
+  transform: translateZ(0);
+}
+input:checked + * {
+  opacity: 1;
+}
+.outer * {
+  filter: unset;
+}
+.inner {
+  position: relative;
+  margin: 3px;
+  overflow: hidden;
+  color: white;
+  font-size: calc(var(--clip_w) * var(--ratio) / 3.5);
+  font-weight: 700;
+  mix-blend-mode: difference;
+}
+.inner p {
+  text-shadow: -0.5px -0.5px 0px rgba(0, 0, 0, 0.3),
+    0.5px 0.5px 0px rgba(0, 0, 0, 0.3);
+}
+.text3 {
+  font-size: calc(var(--clip_w) * var(--ratio) / 2.8);
+}
+#background label:nth-of-type(odd) .outer {
+  animation: bg1 8s ease-in-out infinite alternate both;
+}
+#background label:nth-of-type(even) .outer {
+  animation: bg2 9s ease-in-out infinite alternate both;
+}
+#background label:nth-of-type(3n) .outer {
+  animation-direction: alternate-reverse;
+}
+
+@keyframes arrow {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes bg1 {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+@keyframes bg2 {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .herop1 {
+    font-size: 45px!important;
+  }
+
+  .herop2 {
+    font-size: 25px!important;
+  }
+}

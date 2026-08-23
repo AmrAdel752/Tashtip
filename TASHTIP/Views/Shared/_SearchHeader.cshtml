@@ -1,0 +1,120 @@
+﻿
+<!-- ======= Property Search Section ======= -->
+<div class="click-closed"></div>
+<!--/ Form Search Star /-->
+<div class="box-collapse">
+    <div class="title-box-d"></div>
+    <span class="close-box-collapse right-boxed bi bi-x"></span>
+    <div class="box-collapse-wrap form">
+        <form class="form-a" id="myform">
+            <div class="row">
+                @* <div class="col-md-12 mb-2">
+                <div class="form-group">
+                <label class="pb-2" for="Type">وصف البحث</label>
+                <input type="text"
+                class="form-control form-control-lg form-control-a"
+                placeholder="" />
+                </div>
+                </div> *@
+                <div class="col-md-6 mb-2">
+                    <div class="form-group mt-3">
+                        <label class="pb-2" for="Type">نوع التشطيبات </label>
+                        <select class="form-control form-select form-control-a"
+                                id="ServicesType" asp-items="@ViewBag.ServicesType">
+                            <option value="">-- Select Type --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group mt-3">
+                        <label class="pb-2" for="city">المدينة</label>
+                        <select disabled class="form-control form-select form-control-a"
+                                id="city">
+                            <option>-- Select City --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group mt-3">
+                        <label class="pb-2" for="bedrooms"> المهندس التنفيذي</label>
+                        <select disabled class="form-control form-select form-control-a"
+                                id="engineer">
+                            <option> -- Select Engineer --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group mt-3  ">
+                        <label class="pb-2" for="garages">البائع</label>
+                        <select disabled class="form-control form-select form-control-a"
+                                id="vendor">
+                            <option> -- Select Vendor --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2"> 
+                        <div class="form-group mt-3   ">
+                            <label class="pb-2" for="bathrooms"> سعر الوحدة</label>
+                            <select disabled class="form-control form-select form-control-a"
+                                    id="price">
+                                <option> -- Select Price --</option>
+                            </select>
+                        </div>
+                        
+                </div>
+                <div class="col-md-6 mb-2">
+                     <div class="form-group mt-3   ">
+                        <div class="  mt-4">
+                            <input type="hidden" value="" id="ID" />
+                        </div>
+                        <div class="   mt-4">
+                            <button disabled id="search" style=" width:100%" class="ui button circular small primary mt-4">بحث</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </form>
+    </div>
+</div>
+<!-- End Property Search Section -->
+@* 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+     <script type="text/javascript"> 
+
+        $(document).ready(function () {
+
+        $('#ServicesType').change(function ()  {
+                e.preventDefault();
+                var code = $('#ServicesType').val();
+
+                debugger;
+                $.ajax({
+                    url: '/Home/GetCity',
+                    dataType: 'JSON',
+                    type: 'GET',
+                    data: { model: code },
+                    success: function (result) {
+
+                        console.log(result);
+                        $("#city").empty();
+                        $("#city").append("<option selected disabled value=''>" + "-- Items Code --" + "</option>");
+
+                        for (var i = 0; i < result.length; i++) {
+                            $("#city").append("<option value='" + result[i] + "'>" + result[i] + "</option>");
+                        }
+
+
+                    }
+
+                });
+
+            });
+
+        });
+    </script>
+     
+
+}          *@

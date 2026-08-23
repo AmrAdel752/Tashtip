@@ -1,0 +1,429 @@
+﻿@model TASHTIP.EF.Entities.Production.BussinessGallary
+
+@{
+    ViewData["Title"] = "Booking Your Apartment";
+}
+
+
+
+<style>
+
+
+    /*  --  validation jquery  --  */
+    input.my-error-class, select.my-error-class, textarea.my-error-class {
+        border-bottom-color: #FF0000 !important; /* red */
+        border-bottom-width: 2px !important;
+        border-bottom-left-radius: 6px !important;
+        border-bottom-right-radius: 6px !important;
+    }
+
+    input.my-valid-class, select.my-valid-class, textarea.my-valid-class {
+        border-bottom-color: #00CC00 !important; /* green */
+        border-bottom-width: 2px !important;
+        border-bottom-left-radius: 6px !important;
+        border-bottom-right-radius: 6px !important;
+    }
+
+    .margin-top {
+        margin-top: 120px;
+    }
+
+    .margin-bottom {
+        margin-top: 30px;
+    }
+
+    .dropdown .icon {
+        visibility: hidden;
+    }
+</style>
+
+
+
+
+<div class="container margin-top">
+    <div class="row">
+        <div class="col-md-3">
+            @*<div class="  shadow-lg p-3  rounded" style="width:271px; text-align:center">
+            <h2 >Purchase Request</h2>
+            </div>*@
+            <div class="ui raised segment">
+                <a class="ui green ribbon label">بيانات</a>
+                <h3 style="text-align:center">أحجز وحدتك</h3>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="ui pointing secondary menu">
+                <a class="active item" data-tab="first">أملئ الأستماره</a>
+            </div>
+            <form id="myform" asp-action="PurchaseRequest" asp-controller="Home" method="post" dir="rtl" enctype="multipart/form-data">
+                <div class="ui bottom attached  active tab segment mb-5" data-tab="first">
+                    
+                    <!--old -->
+                    <div class="ui   tiny form">
+                        <div class="inline    fields">
+                            <div class="d-flex flex-row   mb-2">
+                                <div class="  ">
+                                    <div class="   field" hidden>
+                                        <label style="margin-right: 5px;"> تاريخ الطلب</label>
+                                        <input id="RequestDate" value="@DateTime.Now.Date" placeholder="وقت/تاريخ">
+                                        <input id="BussinessGallaryID" value="@Model.ID" placeholder="وقت/تاريخ">
+                                    </div>
+                                </div>  
+                                <div class=" three wide column  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">الأسم بالكامل</label>
+                                        <input style="width:280px" id="CustomerName" type="text" required placeholder="أدخل الاسم">
+                                    </div>
+                                </div>
+                                <div class=" three wide column ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">العنوان </label>
+                                        <input style="width:330px" id="Address" type="text" required placeholder=" أدخل العنوان">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="inline   fields">
+                            <div class="d-flex flex-row justify-content-between mb-2">
+                                
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px; margin-left: 42px;">الوظيفه </label>
+                                        <input style="width:280px" id="Job" type="text" required placeholder=" أدخل الوظيفه">
+                                    </div>
+                                </div>
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">الموبايل   </label>
+                                        <input style="width:200px" id="Mobile" min="0" type="tel" required placeholder=" أدخل التليفون">
+                                    </div>
+                                </div>
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">العمر </label>
+                                        <input style="width:62px"  id="Age" min="1" type="number" required placeholder=" عمرك">
+                                    </div>
+                                </div>
+                            </div>
+
+                          
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="d-flex flex-row justify-content-between  mb-2 ">
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px; margin-left: 20px;">الأميل  </label>
+                                        <input style="width:280px" id="Email" type="email" required placeholder=" أدخل البريد الألكتروني">
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;"> طريقه الدفع</label>
+                                        <select id="DeliveryTerms" class="ui dropdown" required>
+                                                <option value="">-- الطرق  --</option>
+                                                <option value="الدفع كاش عند الاستلام"> الدفع كاش عند الاستلام </option>
+                                                <option value="الدفع فيزا"> الدفع فيزا </option>
+                                                <option value="تقسيط علي مده 1 سنه"> تقسيط علي مده 1 سنه </option>
+                                                <option value="الدفع علي فترتين"> الدفع علي فترتين </option>
+                                       </select> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="d-flex flex-row justify-content-between  mb-2 ">
+                                <div class="  ">
+                                    <div class=" field ">
+                                        <label style="margin-right: 5px; margin-left: 20px;">م/ التنفيذي</label>
+                                        <input readonly  style="width:280px" id="Engineer" type="text" value="@Model.Engineer" placeholder="مهندس ...">
+                                      
+                                    </div>
+                                </div>
+                                <div class="  ">
+                                    <div class=" field ">
+                                        <div class=" ui star rating" id="Rating"  data-rating="1" data-max-rating="5"  ></div>
+                                        @* <div class="container">
+                                            <span id="rateMe4" class="feedback"></span>
+                                        </div> *@
+                                       @*  <input id="input-id" type="text" class="rating"> *@
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="inline fields">
+                            <div class=" d-flex flex-column justify-content-between mb-2">
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">ملاحظات </label>
+                                        <textarea id="Notes" cols="110" rows="3" style="height: 80px;" type="text" placeholder="أكتب ملاحظاتك ..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         
+                    </div>
+                    <!--old -->
+                </div>
+
+                <!--Prograss Complete Proccess-->
+                <div class="ui indicating progress" data-value="1" data-total="200" id="example5" hidden >
+                    <div class="bar">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="label">Waiting for you to press button</div>
+                </div>
+                <!--End Prograss-->
+
+                <div class="ui buttons">
+                    <button id="Release" type="submit" class="ui positive button">حفظ</button>
+                    <div class="or"></div>
+                    <a asp-action="DetailsProperty" asp-controller="Home" asp-route-id="@Model.ID" class="ui button">عوده</a>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+   
+</div>
+
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+
+        // Rating
+         // $('.rating').rating();
+        //$('.ui .start .toggle .rating').rating({
+        //        initialRating: 2,
+        //        maxRating: 4
+        //    });
+
+        // Prograss Finish Proccess
+        $('.rapid.example .ui.button')
+            .on('click', function () {
+                var
+                    $progress = $('.rapid.example .ui.progress'),
+                    $button = $(this),
+                    updateEvent
+                    ;
+                // restart to zero
+                clearInterval(window.fakeProgress)
+                $progress.progress('reset');
+                // updates every 10ms until complete
+                window.fakeProgress = setInterval(function () {
+                    $progress.progress('increment');
+                    $button.text($progress.progress('get value'));
+                    // stop incrementing when complete
+                    if ($progress.progress('is complete')) {
+                        clearInterval(window.fakeProgress)
+                    }
+                }, 10);
+            })
+            ;
+        $('.rapid.example .ui.progress')
+            .progress({
+                duration: 200,
+                total: 200,
+                text: {
+                    active: '{value} of {total} done'
+                }
+            });
+
+            // Tap Form
+        $('.menu .item').tab();
+
+        // Dropdown Form 
+        $('.ui.dropdown').dropdown();
+
+        // Validation Form 
+        $("#myform").validate({
+            errorClass: "my-error-class",
+            validClass: "my-valid-class",
+            errorPlacement: function () {
+                return false;
+            }
+        });
+
+        // Uploud Imge 
+        $("#Required_DataFile1").on('change', function (event) {
+            // var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '') => the same way get file name
+            var CurrentFileSelect = event.target.files[0];
+            $(event.target).attr('value', CurrentFileSelect);
+
+        });
+
+        $("#Rating").on('click', function (event) {
+             var currentRow = $(this);
+             var number = 0;
+            var n;
+            $(".rating  .active").each(function (e) { 
+
+                 n = ++number;
+            }); 
+            console.log(n);
+            currentRow.data("rating", n);
+            console.log(currentRow.data("rating") );
+        });
+
+        $(document).ready(function () {
+
+            $('.rating').rating();
+           
+            
+            jQuery(document).delegate('#myform', 'submit', function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var actionUrl = form.attr('action');
+                //var MainData = new Array();
+                var data = new FormData();
+
+                                             
+                debugger;
+                var RequestDate = $("#RequestDate").val() ?? null;
+                var BussinessGallaryID = $('#BussinessGallaryID').attr('value') ?? null;
+                var CustomerName = $('#CustomerName ').val() ?? null;
+                var Address = $('#Address').val() ?? null;
+                var Job = $("#Job").val() ?? null;
+                var Mobile = $('#Mobile ').val() ?? null;
+                var Age = $('#Age').val() ?? null;
+                var Email = $('#Email').val() ?? null;
+                var Engineer = $('#Engineer').val() ?? null;
+                var Rating = $("#Rating").data("rating");
+                var DeliveryTerms = $('#DeliveryTerms option:selected').val() ?? null;
+                var Notes = $("#Notes").val() ?? null;
+
+
+
+                //if (CustomerName == '' || CustomerName == null) {
+                //    Swal.fire({
+                //        icon: 'warning',
+                //        title: 'من فضلك قم بأدخال الاسم بالكامل !',
+                //    });
+                //    e.stopPropagation();
+                //    return false;
+                //};
+
+                //if (Address == '' || Address == null) {
+                //    Swal.fire({
+                //        icon: 'warning',
+                //        title: 'من فضلك قم بكتابه العنوان بالتفصيل !',
+                //    });
+                //    e.stopPropagation();
+                //    return false;
+                //};
+
+                //if (Job == '' || Job == null) {
+                //    Swal.fire({
+                //        icon: 'warning',
+                //        title: 'من فضلك قم بأدخال الوظيفه الحاليه!',
+                //    });
+                //    e.stopPropagation();
+                //    return false;
+                //};
+
+
+                //if (Mobile == '' || Mobile == null) {
+                //    Swal.fire({
+                //        icon: 'warning',
+                //        title: 'من فضلك قم بأدخال رقم الموبايل  !',
+                //    });
+                //    e.stopPropagation();
+                //    return false;
+                //};
+
+                //if (Age == '' || Age == null) {
+                //    Swal.fire({
+                //        icon: 'warning',
+                //        title: ' من فضلك قم بأدخال السن',
+                //    });
+                //    e.stopPropagation();
+                //    return false;
+                //};
+
+                //if (PersonalID == null || PersonalID == '') {
+                //    Swal.fire({
+                //        icon: 'warning',
+                //        title: 'من فضلك قم بأدخال رقم البطاقه!',
+                //    });
+                //    e.stopPropagation();
+                //    return false;
+                //};
+
+
+                //if (DeliveryTerms == '' || DeliveryTerms == null) {
+                //    Swal.fire({
+                //        icon: 'warning',
+                //        title: 'من فضلك قم بأختيار طريقه الدفع!',
+                //    });
+                //    e.stopPropagation();
+                //    return false;
+                //};
+                  
+
+                 
+                data.append('RequestDate', RequestDate);
+                data.append('BussinessGallaryID', BussinessGallaryID);
+                data.append('CustomerName', CustomerName);
+                data.append('Address', Address);
+                data.append('Job', Job);
+                data.append('Mobile', Mobile);
+                data.append('Age', Age);
+                data.append('Email', Email);
+                data.append('Engineer', Engineer);
+                data.append('Rating', Rating);
+                data.append('DeliveryTerms', DeliveryTerms);
+                data.append('Notes', Notes);
+
+                $.ajax({
+                    url: '/Home/PurchaseRequest',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+
+                        if (data.success == "Success") {
+                            $("#Release").attr('disabled', 'disabled');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Successfully Saved!',
+                            });
+                            e.stopPropagation();
+                            return false;
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Please Check On Data ',
+                            });
+                            e.stopPropagation();
+                            return false;
+                        }
+
+                    }
+                });
+
+
+            });
+
+        });
+    </script>
+}
+
+

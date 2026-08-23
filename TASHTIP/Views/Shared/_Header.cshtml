@@ -1,0 +1,113 @@
+﻿@*
+ 
+    <header id="header" class="header fixed-top d-flex align-items-center" style="margin-bottom:50px">
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="#" class="d-flex align-items-center">
+            <img src="~/LayoutMeters/Images/GPI_Meters.png" alt=""   style="margin-right: 6px; width: 150px" title="Industry Integration Solution System">
+            
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div> 
+
+    <div class="search-bar">
+        <form class="search-form d-flex align-items-center" method="POST" action="#">
+            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+    </div> 
+     
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+
+            <li class="nav-item d-block d-lg-none">
+                <a class="nav-link nav-icon search-bar-toggle " href="#">
+                    <i class="bi bi-search"></i>
+                </a>
+            </li><!-- End Search Icon-->
+
+            <partial name ="_LoginPartial" /> 
+        </ul>
+    </nav><!-- End Icons Navigation -->
+    
+</header>
+ 
+*@
+
+<partial name="_SearchHeader" />
+<!-- ======= Header/Navbar ======= -->
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-between">
+        <div class="logo">
+            <h1>
+                <a href="#">ASHTIP</a><img src="~/LayoutTASHTIP/Images/ico.ico" />
+            </h1>
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li data-aos="zoom-out"
+                    data-aos-duration="1200"
+                    data-aos-delay="100"
+                    style="padding-left: 25px">
+                    <a class="nav-link scrollto active" asp-action="Home" asp-controller="Home"  >الرئيسية</a>
+                </li>
+                <li data-aos="zoom-out"
+                    data-aos-duration="1200"
+                    data-aos-delay="300">
+                    <a class="nav-link scrollto"   href="/Home/Home#services">خدماتنا</a>
+                </li>
+                <li data-aos="zoom-out"
+                    data-aos-duration="1200"
+                    data-aos-delay="400">
+                    <a class="nav-link scrollto" href="#portfolio">معرض الأعمال</a>
+                </li>
+                <li data-aos="zoom-out"
+                    data-aos-duration="1200"
+                    data-aos-delay="500">
+                    <a class="nav-link scrollto" href="#team">فريقنا</a>
+                </li>
+                <li data-aos="zoom-out"
+                    data-aos-duration="1200"
+                    data-aos-delay="600">
+                    <a class="nav-link scrollto" href="#contact">تواصل معنا</a>
+                </li>
+                 @if (AuthorizationServices.AuthorizeAsync(User, "Permissions.Admin").Result.Succeeded)
+                {
+                    <li data-aos="zoom-out"
+                    data-aos-duration="1200"
+                    data-aos-delay="700">
+                        <a class="nav-link scrollto" asp-action="AddProject" asp-controller="Home">أضافه مشروع</a>
+                    </li>
+                    <li data-aos="zoom-out"
+                    data-aos-duration="1200"
+                    data-aos-delay="800"> 
+                        <a class="nav-link scrollto" asp-action="AllPurchaseRequest" asp-controller="Home"> 
+                            <div class="  ui red label">@ViewBag.Notification  طلبات الشراء</div> 
+                        </a> 
+                    </li>
+                }
+                <button style="
+                color: #1bac91;
+                padding: 0 20px;
+                background-color: transparent;
+              "
+                        type="button"
+                        class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarTogglerDemo01">
+                    البحث
+                    <i style="color: #1bac91; margin-right: 10px"
+                       class="bi bi-search"></i>
+                </button>
+                <li class="class=" d-flex align-items-center"">
+                    <partial name="_LoginPartial" />
+                </li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+        <!-- .navbar -->
+    </div>
+</header>
+<!-- End Header -->
+

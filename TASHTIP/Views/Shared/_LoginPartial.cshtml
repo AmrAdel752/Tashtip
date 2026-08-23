@@ -1,0 +1,127 @@
+﻿ 
+@using TASHTIP.EF.ViewModel.UserManagment;
+@using Microsoft.AspNetCore.Identity
+@using TASHTIP.EF.Entities.Employee
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+ 
+@{ 
+    //var UserName = User.Identity?.Name.ToString();
+    //bool ChangePassword = true ;
+    //var ChangePasswordModel = new ChangePasswordModel();
+    //if (UserName != null)
+    //{
+    //    var User = await UserManager.FindByNameAsync(UserName);
+    //    if (User != null)
+    //    { 
+    //        ChangePasswordModel.UserId = User.Id;
+    //        ChangePasswordModel.CurrentPassword = User.PasswordHash;
+
+    //         ChangePassword = User.ChangePass;
+          
+    //    }
+    //}
+  }
+ 
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown pe-3">
+        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="true">
+            <i class="bi bi-person"></i><span class="d-none d-md-block dropdown-toggle ps-2"> @User.Identity?.Name !</span>
+        </a><!-- End Profile Iamge Icon -->
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+                <h6>Hello @User.Identity?.Name!</h6>
+                @*<span> work </span>*@
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            @*@if (!ChangePassword)
+            {
+                <li>
+                    <form class="form-inline" asp-action="ChangePassword" asp-controller="Users" method="post">
+                        <div class="ui modal">
+                            <div class="header">Change Current Password</div>
+                            <div class="content">
+                                <div class="inline fields">
+                                    <input type="hidden" asp-for="@ChangePasswordModel.UserId" />
+                                    <div class="three field">
+                                        <label asp-for="@ChangePasswordModel.CurrentPassword"></label>
+                                        <input asp-for="@ChangePasswordModel.CurrentPassword" value="@ChangePasswordModel.CurrentPassword" class="form-control" readonly />
+                                        <span asp-validation-for="@ChangePasswordModel.CurrentPassword" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="four field">
+                                        <label asp-for="@ChangePasswordModel.NewPassword"></label>
+                                        <input asp-for="@ChangePasswordModel.NewPassword" class="form-control" required />
+                                        <span asp-validation-for="@ChangePasswordModel.NewPassword" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="four field">
+                                        <label asp-for="@ChangePasswordModel.ConfirmNewPassword"></label>
+                                        <input asp-for="@ChangePasswordModel.ConfirmNewPassword" class="form-control" required />
+                                        <span asp-validation-for="@ChangePasswordModel.ConfirmNewPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <div>
+                                    <input type="button" class="ui red basic cancel inverted button">
+                                        <i class="remove icon"></i>
+                                        No 
+                                </div>
+                               
+
+                                <div>
+                                    <input type="submit" class="ui green ok inverted button">
+                                    <i class="checkmark icon"></i>
+                                    Yes
+                                </div>
+                                
+                            </div>
+                        </div>
+
+
+                         
+                    </form>
+                     
+
+                    
+                </li>
+                <!----------------------------------test-->
+               
+            }*@
+
+
+
+
+            <li>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Home","Home")" method="post">
+                    <button type="submit" class="dropdown-item d-flex align-items-center">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span style="margin-right:5px;">Sign Out</span>
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </li>
+}
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+    <script type="text/javascript">
+       // $('.ui.modal').modal('show');
+         
+    </script>
+}
+
+
+ 

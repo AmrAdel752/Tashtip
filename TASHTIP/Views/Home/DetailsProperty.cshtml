@@ -1,0 +1,106 @@
+﻿@model TASHTIP.EF.Entities.Production.BussinessGallary
+ 
+
+
+<main id="main">
+   
+    <!-- ======= Breadcrumbs Section ======= -->
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>تفاصيل الوحدة</h2>
+                <ol>
+                    <li><a href="#">الرئيسية</a></li>
+                    <li><a href="#">معرض الأعمال</a></li>
+                    <li><a href="#">تفاصيل الوحده</a></li>
+                </ol>
+            </div>
+
+        </div>
+    </section><!-- Breadcrumbs Section -->
+    <!-- ======= Portfolio Details Section ======= -->
+    <section id="portfolio-details" class="portfolio-details">
+        <div class="container">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-8">
+                    <div class="portfolio-details-slider swiper">
+                        <div class="swiper-wrapper align-items-center">
+
+                            <!-- <div class="swiper-slide">
+                              <img src="assets/img/portfolio/1.gif" alt="">
+                            </div>
+
+                            <div class="swiper-slide">
+                              <img src="assets/img/portfolio/2.gif" alt="">
+                            </div> -->
+
+                            <div class="swiper-slide">
+                                <iframe width="100%" height="500px" src="@Model.LinkVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                    <br>
+                    <model-viewer class="shadow" src="~/LayoutTASHTIP/3D Models/room/scene.gltf" shadow-intensity="1" camera-controls auto-rotate ar></model-viewer>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="portfolio-info">
+                        <div class="d-flex flex-column justify-content-between mb-3 ">
+                        <div class="ui animated button green" tabindex="0">
+                            <a asp-action="PurchaseRequest" asp-controller="Home" asp-route-id="@Model.ID" style="color:#fff">
+                            <div class="visible content">أحجز وحدتك الأن</div>
+                            <div class="hidden content">
+                                        <i class="bi bi-arrow-right" style=" color: #FFF; font-size:25px; font-weight:bolder;  "></i>
+                            </div>
+                            </a> 
+                        </div>
+
+                        </div>
+                         
+                        <div>
+                            <h3>
+                                تفاصيل 
+                            </h3>
+                        </div> 
+                        <ul>
+                            <li><strong>التصنيف</strong>: @Model.ServicesName </li>
+                            <li><strong>المدينه</strong>: @Model.City </li> 
+                            <li><strong>المهندس التنفيذي</strong>: @Model.Engineer</li>
+                            <li><strong>السعر</strong>: @Model.Price</li>
+                            <li><strong>البائع</strong>: @Model.Vendor </li>
+                            <li><strong>تاريخ الإضافة</strong>: @Model.BussinessDate</li> 
+                        </ul>
+                    </div>
+                    <div class="portfolio-description">
+                        <h2>معلومات الوحدة</h2>
+                        <p>@Model.DetailsUnit  <br><br>
+
+                            <b>تصميم داخلي رفيع ومفعم بالأناقة</b>: @Model.InteriorDesign <br><br>
+
+                            <b>تشطيبات عالية الجودة</b>: @Model.FinishingQuality<br><br>
+
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End property Details Section -->
+
+</main><!-- End #main -->
+@*  @section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+<script type="text/javascript">
+     $(document).ready(function () {
+     });
+    </script>
+ } *@

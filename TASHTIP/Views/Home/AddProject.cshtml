@@ -1,0 +1,411 @@
+﻿@model TASHTIP.EF.Entities.Production.BussinessGallary
+
+@{
+    ViewData["Title"] = "Add Project";
+}
+
+<style>
+    /*  --  validation jquery  --  */
+    input.my-error-class, select.my-error-class, textarea.my-error-class {
+        border-bottom-color: #FF0000 !important; /* red */
+        border-bottom-width: 2px !important;
+        border-bottom-left-radius: 6px !important;
+        border-bottom-right-radius: 6px !important;
+    }
+
+    input.my-valid-class, select.my-valid-class, textarea.my-valid-class {
+        border-bottom-color: #00CC00 !important; /* green */
+        border-bottom-width: 2px !important;
+        border-bottom-left-radius: 6px !important;
+        border-bottom-right-radius: 6px !important;
+    }
+
+    .margin-top {
+        margin-top: 120px;
+    }
+
+    .margin-bottom {
+        margin-top: 30px;
+    }
+
+    .dropdown .icon {
+        visibility: hidden;
+    }
+</style>
+
+
+
+
+<div class="container margin-top"  >
+    <div class="row">
+        <div class="col-md-3">
+            @*<div class="  shadow-lg p-3  rounded" style="width:271px; text-align:center">
+            <h2 >Purchase Request</h2>
+            </div>*@
+            <div class="ui raised segment">
+                <a class="ui green ribbon label">أضافه</a>
+                <h3 style="text-align:center">أتمام مشروع جديد</h3>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="ui pointing secondary menu">
+                <a class="active item" data-tab="first">جديد</a>
+            </div>
+            <form id="myform" asp-action="AddProject" asp-controller="Home" method="post" dir="rtl" enctype="multipart/form-data">
+                <div class="ui bottom attached  active tab segment mb-5" data-tab="first">
+                    <div class="ui tiny form">
+                        <div class="inline three  fields">
+                            <div class="d-flex flex-row justify-content-between mb-2">
+                                <div class="  ">
+                                    <div class="   field">
+                                        <label style="margin-right: 5px;"> تاريخ الأضافه</label>
+                                        <input id="ProjectDate" asp-for="BussinessDate" type="date" required placeholder="وقت/تاريخ">
+                                    </div>
+                                </div>
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">نوع التشطيب</label>
+                                        <select id="ServicesType" asp-for="ServicesName" class=" ui dropdown " required asp-items="@ViewBag.ServicesType">
+                                            <option value="">-- أختيار النوع --</option>
+                                        </select>
+                                    </div> 
+                                </div>
+                                <div class=""> 
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;"> المدينه</label>
+                                        <select id="City" asp-for="City " class="ui dropdown"  required asp-items="@ViewBag.City">
+                                            <option value="">-- أختيار المدينه --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            
+                        </div>
+
+                        <div class="inline   fields">
+                            <div class="d-flex flex-row justify-content-between mb-2">
+                                <div class=" ">
+                                    <div class="  field">
+                                        <label style="margin-right: 5px;">الرئيس التنفيذي</label>
+                                        <select id="Engineer" asp-for="Engineer " class="ui dropdown" required asp-items="@ViewBag.Engineer">
+                                            <option value="">-- أختيار المهندس --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class=" ">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;">البائع</label>
+                                        <input id="Vendor" type="text" required asp-for="Vendor" placeholder="البائع">
+                                    </div>
+                                </div>
+                                <div class=" ">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;">سعر الوحده</label>
+                                        <input asp-for="Price" required type="number" placeholder="سعر الوحده" id="Price">
+                                        <label for="Price" class="ui label">EG</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+
+                        <div class ="inline fields">
+                            <div class="d-flex flex-column justify-content-between  mb-2 ">
+                                <div class=" ">
+                                    <div class=" field">
+                                        <div class="input-group mb-3">
+                                            <div class="custom-file">
+                                                @*<input required class="border border-info" name="DrumSchedules" type="file" id="Drum_Schedule" value="" placeholder="Select file Drum Schedule">*@
+                                                <input asp-for="ProfileImage" id="Required_DataFile1" value="" name="UploadCostingFileMain" type="file" class="custom-file-input form-control">
+                                                <label  id="SelectNameFile1" class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;"> قسم</label>
+                                        <select id="Section" asp-for="Filter" class="ui dropdown" required asp-items="@ViewBag.Section">
+                                            <option value="">-- أختيار القسم --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="d-flex flex-column justify-content-between  mb-2 ">
+                                <div class=" ">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;">تفاصيل الوحده</label>
+                                       @* <input class="flex-fill" id="DetailsUnit" style="width: 200px; height: 100px" asp-for="DetailsUnit" type="text" required placeholder="تفاصيل ...">*@
+                                        <textarea id="DetailsUnit" cols="110" rows="3" style="height: 80px;" asp-for="DetailsUnit" type="text" required placeholder="تفاصيل ..."></textarea>
+                                    </div>
+                                    </div>
+                              
+                             </div> 
+                        </div>
+                        <div class="inline fields">
+                            <div class=" d-flex flex-column justify-content-between mb-2">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;">تفاصيل التصميم الداخلي</label>
+                                        @*<input id="DetailsInteriorDesgin" style="width: 200px;" asp-for="InteriorDesign" required type="text" placeholder="تفاصيل ...">*@
+                                    <textarea id="DetailsInteriorDesgin" cols="100" rows="1" style="height: 50px;" asp-for="InteriorDesign" type="text" required placeholder="تفاصيل ..."></textarea>
+                                    </div> 
+                            </div>
+                        </div>
+
+                        <div class="inline fields"> 
+                                <div class="d-flex flex-column justify-content-between mb-2 ">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;">تفاصيل جوده التشطيب</label>
+                                        @*<input id="DetailsQualityFinishing" style="width: 200px;" asp-for="FinishingQuality" type="text" required placeholder="تفاصيل ...">*@
+                                        <textarea id="DetailsQualityFinishing" cols="100" rows="1" style="height: 50px;" asp-for="FinishingQuality" type="text"  required   placeholder="تفاصيل ..."></textarea>
+                                    </div>
+                                </div>
+                        </div> 
+                      
+                    </div>
+                </div>
+
+                <div class="ui buttons"  >
+                    <button id="Release" type="submit" class="ui positive button">حفظ</button> 
+                    <div class="or"></div> 
+                    <a asp-action="Home" asp-controller="Home" class="ui button">عوده</a>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+
+        // let table = new DataTable('#myTable');
+        let ArrayCode = new Array();
+        let table = $('#myTable').DataTable({
+            "scrollX": true,
+            searching: false,
+            "columnDefs": [
+                { "className": "text-center", "targets": [3, 4, 5, 6, 7, 8, 9] } // Center the content of column index 4
+            ]
+
+        });
+
+        $('.menu .item').tab();
+        $('.ui.dropdown').dropdown();
+        $("#myform").validate({
+            errorClass: "my-error-class",
+            validClass: "my-valid-class",
+            errorPlacement: function () {
+                return false;
+            }
+        });
+
+        $("#Required_DataFile1").on('change', function (event) {
+            // var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '') => the same way get file name 
+            var CurrentFileSelect = event.target.files[0];
+            $(event.target).attr('value', CurrentFileSelect);
+
+        });
+
+        //$('#Required_DataFile1').change(function (e) {
+        //    var file = e.target.files[0].name;
+        //    $('#SelectNameFile1').text(file);
+        //});
+
+        $(document).ready(function () {
+            
+
+
+            jQuery(document).delegate('#myform', 'submit', function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var actionUrl = form.attr('action');
+                //var MainData = new Array();
+                var data = new FormData();
+
+              
+
+                var ProjectDate = $("#ProjectDate").val() ?? null;
+                var ServicesType =   $('#ServicesType option:selected').attr('value') ?? null;
+                var City =  $('#City option:selected').attr('value') ?? null;
+                var Engineer =  $('#Engineer option:selected').attr('value') ?? null;
+                var Vendor = $("#Vendor").val() ?? null;
+                var Price =  isNaN(parseFloat($('#Price').val())) ? 0 :  parseFloat($('#Price').val());
+                var DetailsUnit = $('#DetailsUnit').val() ?? null;
+                var DetailsInteriorDesgin = $('#DetailsInteriorDesgin').val() ?? null;
+                var DetailsQualityFinishing = $('#DetailsQualityFinishing').val() ?? null;
+                //var Image = $("#Required_DataFile1").prop("files")[0];
+                var Image = $("#Required_DataFile1").prop("files")[0];
+                var Section = $("#Section").val() ?? null;
+
+                if (ProjectDate == '' || ProjectDate == null) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'من فضلك قم بأدخال تاريخ الأضافه!',
+                            });
+                            e.stopPropagation();
+                            return false;
+                        };
+
+                if (ServicesType == '' || ServicesType == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار نوع الخدمه!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (City == '' || City == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار المدينه!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+
+                if (Engineer == '' || Engineer == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار الرئيس التنفيذي للمشروع!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (Vendor == '' || Vendor == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأدخال البياع (sponsere)!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (Price == 'undefiend' || Price == null || Price == 0 ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأدخال السعر!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+
+                if (DetailsUnit == '' || DetailsUnit == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأدخال تفاصيل الوحده!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+
+                if (DetailsInteriorDesgin == '' || DetailsInteriorDesgin == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بكتابه تفاضيل توضح الديزاين الداخلي للمشروع!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+
+                if (DetailsQualityFinishing == '' || DetailsQualityFinishing == null ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بكتابه تفاصيل توضح جوده التشطيب!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (Image == '' || Image == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار صوره!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (Section == '' || Section == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار القسم!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                //MainData.push(ProjectDate, ServicesType, City, Engineer, Vendor, Price, DetailsUnit, DetailsInteriorDesgin, DetailsQualityFinishing);
+
+                data.append('ProjectDate', ProjectDate);
+                data.append('ServicesType', ServicesType);
+                data.append('City', City);
+                data.append('Engineer', Engineer);
+                data.append('Vendor', Vendor);
+                data.append('Price', Price);
+                data.append('DetailsUnit', DetailsUnit);
+                data.append('DetailsInteriorDesgin', DetailsInteriorDesgin);
+                data.append('DetailsQualityFinishing', DetailsQualityFinishing);
+                data.append('Image', Image);
+                data.append('Section', Section);
+                  
+                $.ajax({
+                    url: '/Home/AddProject',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: data ,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+
+                        if (data.success == "Success") {
+                            $("#Release").attr('disabled', 'disabled');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Successfully Saved!',
+                            });
+                            e.stopPropagation();
+                            return false;
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Please Check On Data ',
+                            });
+                            e.stopPropagation();
+                            return false;
+                        }
+
+                    }
+                });
+
+
+            });
+
+        });
+    </script>
+}
+
+

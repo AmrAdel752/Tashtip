@@ -1,0 +1,485 @@
+﻿@model TASHTIP.EF.ViewModel.Production.DetailsProjectFinishVM
+
+
+@{
+    ViewData["Title"] = "Details Purchase Request";
+}
+
+
+<style>
+    .margin-top {
+        margin-top: 120px;
+    }
+
+    .margin-bottom {
+        margin-top: 30px;
+    }
+
+    .dropdown .icon {
+        visibility: hidden;
+    }
+</style>
+
+
+
+
+
+
+<div class="container margin-top">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="  shadow-lg p-3  rounded" style="width:271px; text-align:center">
+                <h2>  <i class="object ungroup outline icon"></i> تفاصيل طلب الشراء</h2>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="ui pointing secondary menu">
+                <a class="active item" data-tab="first"> تفاصيل العميل</a>
+                <a class="  item" data-tab="second">تفاصيل الوحده</a>
+            </div>
+            <form id="myform" asp-action="" asp-controller="" method="post">
+                <div class="ui bottom attached  active tab segment" data-tab="first">
+
+                    <!--old -->
+                    <div class="ui   tiny form">
+                        <div class="inline    fields">
+                            <div class="d-flex flex-row   mb-2">
+                                <div class="  ">
+                                    <div class="   field" hidden>
+                                        <label style="margin-right: 5px;"> تاريخ الطلب</label>
+                                        <input id="RequestDate" value="@Model.PurchaseRequest.RequestDate" readonly placeholder="وقت/تاريخ">
+                                        <input id="BussinessGallaryID" value="@Model.PurchaseRequest.ID_PR" readonly placeholder="وقت/تاريخ">
+                                    </div>
+                                </div>
+                                <div class=" three wide column  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">الأسم بالكامل</label>
+                                        <input style="width:280px" id="CustomerName" value="@Model.PurchaseRequest.CutomerName" type="text" readonly placeholder="أدخل الاسم">
+                                    </div>
+                                </div>
+                                <div class=" three wide column ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">العنوان </label>
+                                        <input style="width:330px" id="Address" type="text" value="@Model.PurchaseRequest.Address" readonly placeholder=" أدخل العنوان">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="inline   fields">
+                            <div class="d-flex flex-row justify-content-between mb-2">
+
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px; margin-left: 42px;">الوظيفه </label>
+                                        <input style="width:280px" id="Job" type="text" value="@Model.PurchaseRequest.Job" readonly placeholder=" أدخل الوظيفه">
+                                    </div>
+                                </div>
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">الموبايل   </label>
+                                        <input style="width:200px" id="Mobile" min="0" type="tel" value="@Model.PurchaseRequest.Mobile" readonly placeholder=" أدخل التليفون">
+                                    </div>
+                                </div>
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">العمر </label>
+                                        <input style="width:62px" id="Age" min="1" type="number" value="@Model.PurchaseRequest.Age" readonly placeholder=" عمرك">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="d-flex flex-row justify-content-between  mb-2 ">
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px; margin-left: 54px;">الأميل  </label>
+                                        <input style="width:280px" id="Email" type="email" value="@Model.PurchaseRequest.Email" readonly placeholder=" أدخل البريد الألكتروني">
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;"> طريقه الدفع</label>
+                                        <input style="width:300px" id="PayTerms" type="text" value="@Model.PurchaseRequest.PayTerms" readonly placeholder=" طريقه الدفع">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="d-flex flex-row justify-content-between  mb-2 ">
+                                <div class="  ">
+                                    <div class=" field ">
+                                        <label style="margin-right: 5px; margin-left: 20px;">م/ التنفيذي</label>
+                                        <input readonly style="width:280px" id="Engineer" type="text" value="@Model.PurchaseRequest.Engineer" placeholder="مهندس ...">
+
+                                    </div>
+                                </div>
+                                <div class="  ">
+                                    <div class=" field ">
+                                        <div class="ui star rating" id="Rating" value="@Model.PurchaseRequest.Rating" readonly data-rating="@Model.PurchaseRequest.Rating" data-max-rating="5"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inline fields">
+                            <div class=" d-flex flex-column justify-content-between mb-2">
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">ملاحظات </label>
+                                        <textarea id="Notes" cols="110" rows="3" style="height: 80px;" type="text" placeholder="أكتب ملاحظاتك ..." readonly>
+                                            @Model.PurchaseRequest.Notes
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--old -->
+                </div>
+                <div class="ui bottom attached  tab segment" data-tab="second">
+                    <div class="ui tiny form">
+                        <div class="inline three  fields">
+                            <div class="d-flex flex-row justify-content-between mb-2">
+                                <div class="  ">
+                                    <div class="   field">
+                                        <label style="margin-right: 5px;"> تاريخ الأضافه</label>
+                                        <input id="ProjectDate" type="text" value="@Model.BussinessGallary.BussinessDate" readonly placeholder="وقت/تاريخ">
+                                    </div>
+                                </div>
+                                <div class="  ">
+                                    <div class="  field  ">
+                                        <label style="margin-right: 5px;">نوع التشطيب</label>
+                                        <input id="ServiceType" type="text" value="@Model.BussinessGallary.ServicesName" readonly placeholder="النوع">
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;"> المدينه</label>
+                                        <input id="City" type="text" value="@Model.BussinessGallary.City" readonly placeholder="المدينه">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="inline   fields">
+                            <div class="d-flex flex-row justify-content-between mb-2">
+                                <div class=" ">
+                                    <div class="  field">
+                                        <label style="margin-right: 5px;">الرئيس التنفيذي</label>
+                                        <input id="Engineer" type="text" value="@Model.BussinessGallary.Engineer" readonly placeholder="المهندس">
+                                    </div>
+                                </div>
+                                <div class=" ">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;">البائع</label>
+                                        <input id="Vendor" type="text" value="@Model.BussinessGallary.Vendor" readonly placeholder="البائع">
+                                    </div>
+                                </div>
+                                <div class=" ">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;">سعر الوحده</label>
+                                        <input value="@Model.BussinessGallary.Price" readonly placeholder="سعر الوحده" id="Price">
+                                        <label for="Price" class="ui label">EG</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="d-flex flex-column justify-content-between  mb-2 ">
+                                <div class=" ">
+                                    <div class=" field">
+                                        <div class="input-group mb-3">
+                                            <div class="custom-file">
+                                                @*<input required class="border border-info" name="DrumSchedules" type="file" id="Drum_Schedule" value="" placeholder="Select file Drum Schedule">*@
+                                                <img class="img-thumbnail card-img img-fluid" src="~/ImageFinshProject/Image/@Model.BussinessGallary.ProfileImage" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="">
+                                <div class=" field">
+                                <label style="margin-right: 5px;"> قسم</label>
+                                <input value="@Model.BussinessGallary.Filter" readonly placeholder="القسم" id="Section">
+                                </div>
+                                </div>*@
+                            </div>
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="d-flex flex-column justify-content-between  mb-2 ">
+                                <div class=" ">
+                                    <div class=" field">
+                                        <label style="margin-right: 5px;">تفاصيل الوحده</label>
+                                        @* <input class="flex-fill" id="DetailsUnit" style="width: 200px; height: 100px" asp-for="DetailsUnit" type="text" required placeholder="تفاصيل ...">*@
+                                        <textarea id="DetailsUnit" cols="110" rows="3" style="height: 80px;" type="text" readonly placeholder="تفاصيل ...">
+                                            @Model.BussinessGallary.DetailsUnit.Trim()
+                                    </textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="inline fields">
+                            <div class=" d-flex flex-column justify-content-between mb-2">
+                                <div class=" field">
+                                    <label style="margin-right: 5px;">تفاصيل التصميم الداخلي</label>
+                                    @*<input id="DetailsInteriorDesgin" style="width: 200px;" asp-for="InteriorDesign" required type="text" placeholder="تفاصيل ...">*@
+                                    <textarea id="DetailsInteriorDesgin" cols="100" rows="1" style="height: 50px;" type="text" readonly placeholder="تفاصيل ...">
+                                    @Model.BussinessGallary.InteriorDesign.Trim()
+                                </textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="d-flex flex-column justify-content-between mb-2 ">
+                                <div class=" field">
+                                    <label style="margin-right: 5px;">تفاصيل جوده التشطيب</label>
+                                    @*<input id="DetailsQualityFinishing" style="width: 200px;" asp-for="FinishingQuality" type="text" required placeholder="تفاصيل ...">*@
+                                    <textarea id="DetailsQualityFinishing" cols="100" rows="1" style="height: 50px;" type="text" readonly placeholder="تفاصيل ...">
+                                        @Model.BussinessGallary.FinishingQuality.Trim()
+                                </textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="ui   buttons">
+                    <a asp-action="PrintPR" asp-controller="Home" asp-route-id="@Model.PurchaseRequest.ID_PR" class="ui positive button">تقرير</a>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+
+        // Rating
+        $('.ui.rating').rating({});
+
+        // let table = new DataTable('#myTable');
+        let ArrayCode = new Array();
+         
+
+        $('.menu .item').tab();
+        $('.ui.dropdown').dropdown();
+        $("#myform").validate({
+            errorClass: "my-error-class",
+            validClass: "my-valid-class",
+            errorPlacement: function () {
+                return false;
+            }
+        });
+
+
+
+        //$('#Required_DataFile1').change(function (e) {
+        //    var file = e.target.files[0].name;
+        //    $('#SelectNameFile1').text(file);
+        //});
+
+        $(document).ready(function () {
+
+
+
+            jQuery(document).delegate('#myform', 'submit', function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var actionUrl = form.attr('action');
+                //var MainData = new Array();
+                var data = new FormData();
+
+
+
+                var ProjectDate = $("#ProjectDate").val() ?? null;
+                var ServicesType = $('#ServicesType option:selected').attr('value') ?? null;
+                var City = $('#City option:selected').attr('value') ?? null;
+                var Engineer = $('#Engineer option:selected').attr('value') ?? null;
+                var Vendor = $("#Vendor").val() ?? null;
+                var Price = isNaN(parseFloat($('#Price').val())) ? 0 : parseFloat($('#Price').val());
+                var DetailsUnit = $('#DetailsUnit').val() ?? null;
+                var DetailsInteriorDesgin = $('#DetailsInteriorDesgin').val() ?? null;
+                var DetailsQualityFinishing = $('#DetailsQualityFinishing').val() ?? null;
+                //var Image = $("#Required_DataFile1").prop("files")[0];
+                var Image = $("#Required_DataFile1").prop("files")[0];
+                var Section = $("#Section").val() ?? null;
+
+                if (ProjectDate == '' || ProjectDate == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأدخال تاريخ الأضافه!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (ServicesType == '' || ServicesType == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار نوع الخدمه!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (City == '' || City == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار المدينه!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+
+                if (Engineer == '' || Engineer == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار الرئيس التنفيذي للمشروع!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (Vendor == '' || Vendor == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأدخال البياع (sponsere)!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (Price == 'undefiend' || Price == null || Price == 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأدخال السعر!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+
+                if (DetailsUnit == '' || DetailsUnit == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأدخال تفاصيل الوحده!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+
+                if (DetailsInteriorDesgin == '' || DetailsInteriorDesgin == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بكتابه تفاضيل توضح الديزاين الداخلي للمشروع!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+
+                if (DetailsQualityFinishing == '' || DetailsQualityFinishing == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بكتابه تفاصيل توضح جوده التشطيب!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (Image == '' || Image == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار صوره!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                if (Section == '' || Section == null) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'من فضلك قم بأختيار القسم!',
+                    });
+                    e.stopPropagation();
+                    return false;
+                };
+
+                //MainData.push(ProjectDate, ServicesType, City, Engineer, Vendor, Price, DetailsUnit, DetailsInteriorDesgin, DetailsQualityFinishing);
+
+                data.append('ProjectDate', ProjectDate);
+                data.append('ServicesType', ServicesType);
+                data.append('City', City);
+                data.append('Engineer', Engineer);
+                data.append('Vendor', Vendor);
+                data.append('Price', Price);
+                data.append('DetailsUnit', DetailsUnit);
+                data.append('DetailsInteriorDesgin', DetailsInteriorDesgin);
+                data.append('DetailsQualityFinishing', DetailsQualityFinishing);
+                data.append('Image', Image);
+                data.append('Section', Section);
+
+                $.ajax({
+                    url: '/Home/AddProject',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+
+                        if (data.success == "Success") {
+                            $("#Release").attr('disabled', 'disabled');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Successfully Saved!',
+                            });
+                            e.stopPropagation();
+                            return false;
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Please Check On Data ',
+                            });
+                            e.stopPropagation();
+                            return false;
+                        }
+
+                    }
+                });
+
+
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,33 @@
+# Visual Studio / build artifacts
+.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+# Publish output
+**/PublishProfiles/*.pubxml.user
+publish/
+**/Publish/
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Local secrets / machine-specific settings (keep appsettings.json template, ignore local overrides)
+appsettings.*.local.json

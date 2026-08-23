@@ -1,0 +1,19 @@
+
+>> in this project we will use clean Architecture(Layer Architecture)
+
+>> We will devide Our project (( Four )) project 
+    ----------------------------------
+1-Presentaion Layer     (TASHTIP.Web)
+2-EntityFrameWork Layer (TASHTIP.EF) 
+3-Data Access Layer     (TASHTIP.InfraDB)
+4-Business Logic Layer  (TASHTIP.RepoUOWCore)
+
+
+>> Circle Project
+   --------------
+EF ........ => Not Depend On Any Project (Independent)
+InfraDB ... => Depend On (EF)
+Web ....... => Depend On (EF/InfraDB/RepoCore)
+RepoUOWCore => Depend On (EF/InfraDB)
+
+

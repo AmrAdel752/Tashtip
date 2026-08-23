@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+   @* <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TASHTIP</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!--========= All Style =========-->
+    <partial name="_Style" />
+    <!-------------Style------------->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="~/LayoutMeters/Js/sweetalert2/sweetalert2.all.js"></script>*@
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>@ViewData["Title"] - Tashtip 🎨</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <!--========= All Style =========-->
+    <partial name="_Style" />
+   
+</head>
+
+<body>
+     
+    <!-- ======= Header ======= -->
+    <partial name="_Header" />
+    <!-- End Header --> 0
+    <!-- End Sidebar-->
+    <!-- =========== Body ======== -->
+    <div  class=" "  >
+        <main role="main" id="main">
+            <partial name="_NotificationMessage" />
+            @RenderBody()
+        </main>
+    </div>
+    <!--- END Body --->
+   
+
+    <a href="#"
+       class="back-to-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
+
+     
+
+    <!-- ======= Footer ======= -->
+   @* <footer id="footer" class="border-top footer text-muted text-center py-3" style="z-index: -1 !important;">
+        <!-- Copyright -->
+        <div class="container">
+            &copy; @DateTime.Now.Year - Industrial Integration Solutions Sysytem (IISS)
+        </div>
+        <!-- Copyright -->
+    </footer>*@
+
+
+
+
+
+
+    <!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< JAVASCRIPT Liprary >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+    <partial name="_Scripts" />
+    <partial name="_ValidationScriptsPartial" />
+    @await RenderSectionAsync("Scripts", required: false)
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#ServicesType').change(function (e) {
+                e.preventDefault();
+                var code = $('#ServicesType').val();
+                $("#city").attr('disabled',false);
+                debugger;
+                $.ajax({
+                    url: '/Home/GetCity',
+                    dataType: 'JSON',
+                    type: 'GET',
+                    data: { model: code },
+                    success: function (result) {
+
+                        console.log(result);
+                        $("#city").empty();
+                        $("#city").append("<option>"+ "-- Select City --" + "</option>");
+
+                        for (var i = 0; i < result.length; i++) {
+                            $("#city").append("<option value='" + result[i] + "'>" + result[i] + "</option>");
+                        }
+
+
+                    }
+
+                });
+
+            });
+            $('#city').change(function (e) {
+                e.preventDefault();
+                var code = $('#ServicesType').val();
+                var city = $('#city').val();
+                $("#engineer").attr('disabled', false);
+                debugger;
+                $.ajax({
+                    url: '/Home/GetEngineer',
+                    dataType: 'JSON',
+                    type: 'GET',
+                    data: { model: code , city: city },
+                    success: function (result) {
+
+                        console.log(result);
+                        $("#engineer").empty();
+                        $("#engineer").append("<option>" + "-- Select Engineer --" + "</option>");
+
+                        for (var i = 0; i < result.length; i++) {
+                            $("#engineer").append("<option value='" + result[i] + "'>" + result[i] + "</option>");
+                        }
+
+
+                    }
+
+                });
+
+            });
+
+            $('#engineer').change(function (e) {
+                e.preventDefault();
+                var code = $('#ServicesType').val();
+                var city = $('#city').val();
+                var engineer = $('#engineer').val();
+                $("#vendor").attr('disabled', false);
+                debugger;
+                $.ajax({
+                    url: '/Home/GetVendor',
+                    dataType: 'JSON',
+                    type: 'GET',
+                    data: { model: code, city: city, engineer: engineer },
+                    success: function (result) {
+
+                        console.log(result);
+                        $("#vendor").empty();
+                        $("#vendor").append("<option>" + "-- Select Vendor --" + "</option>");
+
+                        for (var i = 0; i < result.length; i++) {
+                            $("#vendor").append("<option value='" + result[i] + "'>" + result[i] + "</option>");
+                        }
+
+
+                    }
+
+                });
+
+            });
+
+            $('#vendor').change(function (e) {
+                e.preventDefault();
+                var code = $('#ServicesType').val();
+                var city = $('#city').val();
+                var engineer = $('#engineer').val();
+                var vendor = $('#vendor').val();
+
+                $("#price").attr('disabled', false);
+                debugger;
+                $.ajax({
+                    url: '/Home/GetPrice',
+                    dataType: 'JSON',
+                    type: 'GET',
+                    data: { model: code, city: city, engineer: engineer, vendor: vendor },
+                    success: function (result) {
+
+                        console.log(result);
+                        $("#price").empty();
+                        $("#price").append("<option>" + "-- Select Price --" + "</option>");
+
+                        for (var i = 0; i < result.length; i++) {
+                            $("#price").append("<option value='" + result[i] + "'>" + result[i] + " £ " + "</option>");
+                        }
+
+
+                    }
+
+                });
+
+            });
+
+            $('#price').change(function (e) {
+                e.preventDefault();
+                var code = $('#ServicesType').val();
+                var city = $('#city').val();
+                var engineer = $('#engineer').val();
+                var vendor = $('#vendor').val();
+                var price = $('#price').val();
+
+               
+                debugger;
+                $.ajax({
+                    url: '/Home/Search',
+                    dataType: 'JSON',
+                    type: 'GET',
+                    data: { model: code, city: city, engineer: engineer, vendor: vendor,price:price },
+                    success: function (result) {
+
+                        console.log(result);
+                        $("#ID").attr('value', result);
+                        $("#search").attr('disabled', false);
+
+                        // $("#price").empty();
+                        // $("#price").append("<option>" + "-- Select Price --" + "</option>");
+
+                        // for (var i = 0; i < result.length; i++) {
+                        //     $("#price").append("<option value='" + result[i] + "'>" + result[i] + " £ " + "</option>");
+                        // }
+
+
+                    }
+
+                });
+
+            });
+
+
+            $('#search').on('click',function (e) {
+                e.preventDefault();
+                debugger;
+                var ID = $("#ID").attr('value');
+
+                window.location = '/Home/DetailsProperty?id=' + ID;
+                // debugger;
+                // $.ajax({
+                //     url: '/Home/DetailsProperty',
+                //     dataType: 'JSON',
+                //     type: 'GET',
+                //     data: { id: ID  },
+                //     success: function (result) {
+                         
+
+                //     }
+
+                // });
+
+            });
+
+            // jQuery(document).delegate('#myform', 'submit', function (e) {
+            //     e.preventDefault();
+            //     var code = $('#ServicesType').val();
+            //     var city = $('#city').val();
+            //     var engineer = $('#engineer').val();
+            //     var vendor = $('#vendor').val();
+
+            //     $.ajax({
+            //         url: '/Home/Search',
+            //         type: 'POST',
+            //         dataType: 'JSON',
+            //         data: {
+            //             model: code, city: city, engineer: engineer, vendor: vendor
+            //         },
+            //         success: function (data) {
+                       
+            //         }
+            //     });
+            // });
+
+        });
+    </script>
+</body>
+
+</html>
