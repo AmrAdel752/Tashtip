@@ -52,6 +52,11 @@ namespace TASHTIP.Controllers
                 ViewBag.Notification = HttpContext.Session.GetInt32("Badge_Number_Of_PR_New"); 
             }
             ViewBag.ServicesType = new SelectList(DB.ServicesType, "Services", "Services");
+            ViewBag.ApprovedReviews = DB.Review
+                .Where(r => r.IsApproved)
+                .OrderByDescending(r => r.CreatedAt)
+                .Take(9)
+                .ToList();
             if (result != null)
             {
                 return View(result);

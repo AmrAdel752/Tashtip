@@ -488,6 +488,39 @@
       </section>
       <!-- End Pricing Section -->
 
+      <!-- ======= Reviews Section ======= -->
+      @{
+          var approvedReviews = ViewBag.ApprovedReviews as List<TASHTIP.EF.Entities.Production.Review>;
+      }
+      @if (approvedReviews != null && approvedReviews.Any())
+      {
+          <section id="reviews" class="reviews section-bg">
+              <div class="container">
+                  <div class="section-title" data-aos="fade-up">
+                      <h2><b>آراء عملائنا</b></h2>
+                      <p>
+                          ثقة عملائنا هي أفضل دليل على جودة تشطيباتنا - إليك بعض تجاربهم الحقيقية.
+                      </p>
+                  </div>
+                  <div class="row g-4">
+                      @foreach (var r in approvedReviews)
+                      {
+                          <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                              <div class="h-100 p-4 rounded shadow-sm bg-white">
+                                  <div class="text-warning mb-2" style="font-size:1.1rem">
+                                      @string.Concat(Enumerable.Repeat("★", r.Rating))@string.Concat(Enumerable.Repeat("☆", 5 - r.Rating))
+                                  </div>
+                                  <p class="mb-3">"@r.Comment"</p>
+                                  <strong>- @r.CustomerName</strong>
+                              </div>
+                          </div>
+                      }
+                  </div>
+              </div>
+          </section>
+      }
+      <!-- End Reviews Section -->
+
       <!-- ======= F.A.Q Section ======= -->
       <section id="faq" class="faq section-bg">
         <div class="container">
