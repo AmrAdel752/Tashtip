@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TASHTIP.InfraDB.ContextDB;
 
@@ -11,9 +12,11 @@ using TASHTIP.InfraDB.ContextDB;
 namespace TASHTIP.InfraDB.Migrations
 {
     [DbContext(typeof(GeneralDBContext))]
-    partial class GeneralDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260823084939_AddDashboardSchema")]
+    partial class AddDashboardSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

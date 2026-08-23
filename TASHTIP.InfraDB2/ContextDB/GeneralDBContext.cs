@@ -36,7 +36,12 @@ namespace TASHTIP.InfraDB.ContextDB
         public DbSet<FilterGallary> FilterGallary { get; set; }
         public DbSet<PurchaseRequest> PurchaseRequest { get; set; }
 
-
+        //Added for the dashboards / expanded feature set
+        public DbSet<BussinessGallaryImage> BussinessGallaryImage { get; set; }
+        public DbSet<RequestStatusHistory> RequestStatusHistory { get; set; }
+        public DbSet<Review> Review { get; set; }
+        public DbSet<Appointment> Appointment { get; set; }
+        public DbSet<Notification> Notification { get; set; }
 
     }
 }

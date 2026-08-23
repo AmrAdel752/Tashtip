@@ -31,5 +31,11 @@ namespace TASHTIP.EF.Entities.Production
         public string  ProfileImage { get; set; }
 
         public string Filter { get; set; }
+
+        /// <summary>Path (under wwwroot) to a real .gltf/.glb 3D model of this unit. Null = show the demo model.</summary>
+        public string? Model3DPath { get; set; }
+
+        /// <summary>Path (under wwwroot) to a real equirectangular 360° photo of this unit. Null = show the demo panorama.</summary>
+        public string? Panorama360Path { get; set; }
     }
 }
