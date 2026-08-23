@@ -8,8 +8,6 @@ using TASHTIP.Models;
 using Microsoft.AspNetCore.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using TASHTIP.EF.ViewModel.Production;
-using System.Data.Entity;
-using static System.Collections.Specialized.BitVector32;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using AspNetCore.Reporting;
