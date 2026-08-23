@@ -1,50 +1,118 @@
-﻿@model TASHTIP.EF.Entities.Production.BussinessGallary
- 
+@model TASHTIP.EF.Entities.Production.BussinessGallary
+@{
+    var images = ViewBag.Images as List<TASHTIP.EF.Entities.Production.BussinessGallaryImage> ?? new();
+    var model3d = string.IsNullOrEmpty(Model.Model3DPath) ? "~/LayoutTASHTIP/3D Models/room/scene.gltf" : Model.Model3DPath;
+    var panorama = string.IsNullOrEmpty(Model.Panorama360Path) ? "~/LayoutTASHTIP/Images/vr/demo-panorama.jpg" : Model.Panorama360Path;
+}
 
+<!-- Photo Sphere Viewer (VR 360 tab) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css" />
 
 <main id="main">
-   
+
     <!-- ======= Breadcrumbs Section ======= -->
     <section class="breadcrumbs">
         <div class="container">
-
             <div class="d-flex justify-content-between align-items-center">
                 <h2>تفاصيل الوحدة</h2>
                 <ol>
-                    <li><a href="#">الرئيسية</a></li>
-                    <li><a href="#">معرض الأعمال</a></li>
-                    <li><a href="#">تفاصيل الوحده</a></li>
+                    <li><a asp-action="Home" asp-controller="Home">الرئيسية</a></li>
+                    <li><a asp-action="Home" asp-controller="Home">#portfolio</a></li>
+                    <li>تفاصيل الوحده</li>
                 </ol>
             </div>
-
         </div>
     </section><!-- Breadcrumbs Section -->
+
     <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
         <div class="container">
-
             <div class="row gy-4">
 
                 <div class="col-lg-8">
-                    <div class="portfolio-details-slider swiper">
-                        <div class="swiper-wrapper align-items-center">
+                    <!-- ======= 2D / 3D / VR viewer ======= -->
+                    <ul class="nav nav-pills mb-3" id="unitViewTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab2d" type="button">
+                                <i class="bi bi-images"></i> صور 2D
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab3d" type="button" id="tab3d-btn">
+                                <i class="bi bi-badge-3d"></i> معاينة 3D
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabvr" type="button" id="tabvr-btn">
+                                <i class="bi bi-badge-vr"></i> جولة VR 360°
+                            </button>
+                        </li>
+                        @if (!string.IsNullOrEmpty(Model.LinkVideo))
+                        {
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabvideo" type="button">
+                                    <i class="bi bi-play-circle"></i> فيديو
+                                </button>
+                            </li>
+                        }
+                    </ul>
 
-                            <!-- <div class="swiper-slide">
-                              <img src="assets/img/portfolio/1.gif" alt="">
-                            </div>
-
-                            <div class="swiper-slide">
-                              <img src="assets/img/portfolio/2.gif" alt="">
-                            </div> -->
-
-                            <div class="swiper-slide">
-                                <iframe width="100%" height="500px" src="@Model.LinkVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <div class="tab-content">
+                        <!-- 2D -->
+                        <div class="tab-pane fade show active" id="tab2d">
+                            <div class="row g-2">
+                                @if (images.Any())
+                                {
+                                    foreach (var img in images)
+                                    {
+                                        <div class="col-6 col-md-4">
+                                            <a href="~/ImageFinshProject/Image/@img.ImagePath" class="glightbox" data-gallery="unit-2d">
+                                                <img src="~/ImageFinshProject/Image/@img.ImagePath" class="img-fluid rounded" style="height:180px;width:100%;object-fit:cover" />
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                                else if (!string.IsNullOrEmpty(Model.ProfileImage))
+                                {
+                                    <div class="col-12">
+                                        <a href="~/ImageFinshProject/Image/@Model.ProfileImage" class="glightbox" data-gallery="unit-2d">
+                                            <img src="~/ImageFinshProject/Image/@Model.ProfileImage" class="img-fluid rounded shadow" style="max-height:500px;width:100%;object-fit:cover" />
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-12 text-center text-muted py-5">لا توجد صور مرفوعة لهذه الوحدة بعد.</div>
+                                }
                             </div>
                         </div>
-                        <div class="swiper-pagination"></div>
+
+                        <!-- 3D -->
+                        <div class="tab-pane fade" id="tab3d">
+                            <model-viewer class="shadow rounded" style="width:100%;height:500px;background:#f4f7f6"
+                                          src="@Url.Content(model3d)" shadow-intensity="1" camera-controls auto-rotate ar></model-viewer>
+                            @if (string.IsNullOrEmpty(Model.Model3DPath))
+                            {
+                                <p class="text-muted small mt-2">موديل 3D تجريبي للعرض - يمكن للإدارة رفع موديل حقيقي لهذه الوحدة من لوحة التحكم.</p>
+                            }
+                        </div>
+
+                        <!-- VR 360 -->
+                        <div class="tab-pane fade" id="tabvr">
+                            <div id="psv-container" style="width:100%;height:500px;border-radius:.5rem;overflow:hidden"></div>
+                            @if (string.IsNullOrEmpty(Model.Panorama360Path))
+                            {
+                                <p class="text-muted small mt-2">بانوراما VR تجريبية للعرض - يمكن للإدارة رفع صورة 360° حقيقية لهذه الوحدة من لوحة التحكم.</p>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.LinkVideo))
+                        {
+                            <div class="tab-pane fade" id="tabvideo">
+                                <iframe width="100%" height="500px" src="@Model.LinkVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            </div>
+                        }
                     </div>
-                    <br>
-                    <model-viewer class="shadow" src="~/LayoutTASHTIP/3D Models/room/scene.gltf" shadow-intensity="1" camera-controls auto-rotate ar></model-viewer>
                 </div>
 
                 <div class="col-lg-4">
@@ -56,23 +124,23 @@
                             <div class="hidden content">
                                         <i class="bi bi-arrow-right" style=" color: #FFF; font-size:25px; font-weight:bolder;  "></i>
                             </div>
-                            </a> 
+                            </a>
                         </div>
 
                         </div>
-                         
+
                         <div>
                             <h3>
-                                تفاصيل 
+                                تفاصيل
                             </h3>
-                        </div> 
+                        </div>
                         <ul>
                             <li><strong>التصنيف</strong>: @Model.ServicesName </li>
-                            <li><strong>المدينه</strong>: @Model.City </li> 
+                            <li><strong>المدينه</strong>: @Model.City </li>
                             <li><strong>المهندس التنفيذي</strong>: @Model.Engineer</li>
                             <li><strong>السعر</strong>: @Model.Price</li>
                             <li><strong>البائع</strong>: @Model.Vendor </li>
-                            <li><strong>تاريخ الإضافة</strong>: @Model.BussinessDate</li> 
+                            <li><strong>تاريخ الإضافة</strong>: @Model.BussinessDate</li>
                         </ul>
                     </div>
                     <div class="portfolio-description">
@@ -93,14 +161,31 @@
     </section><!-- End property Details Section -->
 
 </main><!-- End #main -->
-@*  @section Scripts {
 
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<script type="module" src="https://unpkg.com/@@google/model-viewer/dist/model-viewer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.140/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.js"></script>
+<script>
+    var psvViewer = null;
+    var psvInitialized = false;
+
+    function initPsvIfNeeded() {
+        if (psvInitialized) return;
+        psvInitialized = true;
+        psvViewer = new PhotoSphereViewer.Viewer({
+            container: document.querySelector('#psv-container'),
+            panorama: '@Url.Content(panorama)',
+            navbar: ['zoom', 'fullscreen'],
+            loadingImg: undefined
+        });
     }
 
-<script type="text/javascript">
-     $(document).ready(function () {
-     });
-    </script>
- } *@
+    document.getElementById('tabvr-btn')?.addEventListener('shown.bs.tab', initPsvIfNeeded);
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof GLightbox !== 'undefined') {
+            GLightbox({ selector: '.glightbox' });
+        }
+    });
+</script>

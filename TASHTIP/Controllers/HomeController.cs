@@ -111,6 +111,10 @@ namespace TASHTIP.Controllers
                 var result = DB.BussinessGallary.Where(c=>c.ID == id).FirstOrDefault();
                 if (result != null)
                 {
+                    ViewBag.Images = DB.BussinessGallaryImage
+                        .Where(i => i.BussinessGallaryID == id)
+                        .OrderBy(i => i.SortOrder)
+                        .ToList();
                     return View(result);
                 }
                 return View();
